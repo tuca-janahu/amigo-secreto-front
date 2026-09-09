@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate } from 'react-router-dom'
+import { PixelBrand } from '../components/PixelBrand'
 import { AuthForm } from '../features/auth/AuthForm'
 import { authQueryKey, authQueryOptions } from '../features/auth/auth.queries'
 import type { CredentialsFormData } from '../features/auth/auth.schemas'
@@ -23,7 +24,7 @@ export function RegisterPage() {
       try {
         await queryClient.invalidateQueries({ queryKey: authQueryKey })
         await queryClient.fetchQuery(authQueryOptions)
-        navigate('/', { replace: true })
+        navigate('/dashboard', { replace: true })
       } catch (authError) {
         if (authError instanceof ApiError && authError.status === 401) {
           navigate('/login', { replace: true })
@@ -44,20 +45,27 @@ export function RegisterPage() {
   }
 
   return (
-    <main className="page page-centered">
-      <section className="auth-card" aria-labelledby="register-title">
-        <p className="eyebrow">Amigo Secreto</p>
-        <h1 id="register-title">Crie sua conta</h1>
-        <p className="intro">Prepare-se para os próximos sorteios.</p>
-        <AuthForm
-          submitLabel="Criar conta"
-          isSubmitting={isSubmitting}
-          error={error}
-          onSubmit={handleSubmit}
-        />
-        <p className="auth-link">
-          Já tem uma conta? <Link to="/login">Entrar</Link>
-        </p>
+    <main className="grid min-h-screen font-mono text-black lg:grid-cols-[minmax(430px,0.85fr)_1fr]">
+      <section className="order-2 grid place-items-center bg-green-100 px-5 py-12 sm:px-8 lg:order-1">
+        <div className="w-full max-w-md border-2 border-black bg-white p-6 shadow-[7px_7px_0_#151515] sm:p-10" aria-labelledby="register-title">
+          <p className="text-xs font-black uppercase tracking-[0.18em] text-green-900">Nova jornada</p>
+          <h1 id="register-title" className="mt-3 text-3xl leading-none font-black tracking-[-0.06em] sm:text-4xl">Crie sua conta.</h1>
+          <p className="mt-4 text-sm leading-6 text-black/70">Em poucos segundos você já pode preparar o próximo sorteio.</p>
+          <div className="mt-6"><AuthForm submitLabel="Criar conta" isSubmitting={isSubmitting} error={error} onSubmit={handleSubmit} /></div>
+          <p className="mt-7 text-center text-xs leading-6 text-black/70">Já tem uma conta? <Link className="font-black uppercase text-red-600 underline decoration-2 underline-offset-4" to="/login">Entrar</Link></p>
+        </div>
+      </section>
+
+      <section className="order-1 relative overflow-hidden bg-green-900 px-6 py-7 text-white sm:px-10 lg:order-2 lg:px-[clamp(40px,7vw,110px)] lg:py-10">
+        <PixelBrand light />
+        <div className="mx-auto mt-14 max-w-xl lg:mt-[clamp(72px,14vh,150px)]">
+          <p className="inline-block border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-wider text-black shadow-[3px_3px_0_#151515]">Comece agora</p>
+          <h2 className="mt-6 text-4xl leading-[0.95] font-black tracking-[-0.07em] sm:text-6xl">Mais surpresa. Menos planilha.</h2>
+          <p className="mt-6 max-w-md text-base leading-7 text-white sm:text-lg">Organize o amigo secreto da turma sem confusão e deixe cada resultado protegido.</p>
+        </div>
+        <div className="mx-auto mt-12 grid max-w-sm grid-cols-3 gap-3" aria-hidden="true">
+          {['Grupo', 'Convite', 'Sorteio'].map((label, index) => <div key={label} className={`border-2 border-black p-3 text-center text-xs font-black uppercase shadow-[4px_4px_0_#151515] ${index === 1 ? 'bg-red-600 text-white' : 'bg-white text-black'}`}>{label}</div>)}
+        </div>
       </section>
     </main>
   )
