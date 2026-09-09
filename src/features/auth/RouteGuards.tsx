@@ -8,7 +8,7 @@ function SessionLoading() {
 export function ProtectedRoute() {
   const { data: user, isPending } = useAuth()
   if (isPending) return <SessionLoading />
-  if (!user) return <Navigate to="/login" replace />
+  if (!user) return <Navigate to="/" replace />
   return <Outlet />
 }
 
