@@ -7,6 +7,7 @@ export type Credentials = {
 
 export type AuthenticatedUser = {
   id: string | number
+  name?: string
   email: string
 }
 

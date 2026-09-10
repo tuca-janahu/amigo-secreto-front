@@ -37,7 +37,10 @@ export function LoginPage() {
   return (
     <main className="grid min-h-screen font-mono text-black lg:grid-cols-[1fr_minmax(430px,0.85fr)]">
       <section className="relative overflow-hidden bg-amber-400 px-6 py-7 text-white sm:px-10 lg:px-[clamp(40px,7vw,110px)] lg:py-10">
-        <PixelBrand light />
+        <div className="flex items-center gap-4">
+          <Link className="border-2 border-black bg-white px-3 py-2 text-xs font-black uppercase text-black shadow-[3px_3px_0_#151515] transition hover:bg-amber-100" to="/">← Voltar</Link>
+          <PixelBrand light />
+        </div>
         <div className="mx-auto mt-16 max-w-xl lg:mt-[clamp(72px,14vh,150px)]">
           <p className="inline-block border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-wider text-black shadow-[3px_3px_0_#151515]">Bom te ver de novo</p>
           <h1 className="mt-6 text-4xl leading-[0.95] font-black tracking-[-0.07em] sm:text-6xl">Seu próximo sorteio está esperando.</h1>
