@@ -10,7 +10,7 @@ export function DashboardPage() {
   const queryClient = useQueryClient()
   const navigate = useNavigate()
   const [isLeaving, setIsLeaving] = useState(false)
-  const displayName = user?.name?.trim() || user?.email.split('@')[0] || 'Jogador'
+  const displayName = user?.name?.trim() || 'Jogador'
 
   async function handleLogout() {
     setIsLeaving(true)
