@@ -49,7 +49,6 @@ export function RegisterPage() {
     <main className="grid min-h-screen font-mono text-black lg:grid-cols-[minmax(430px,0.85fr)_1fr]">
       <section className="order-2 grid place-items-center bg-green-100 px-5 py-12 sm:px-8 lg:order-1">
         <div className="w-full max-w-md border-2 border-black bg-white p-6 shadow-[7px_7px_0_#151515] sm:p-10" aria-labelledby="register-title">
-          <p className="text-xs font-black uppercase tracking-[0.18em] text-green-900">Nova jornada</p>
           <h1 id="register-title" className="mt-3 text-3xl leading-none font-black tracking-[-0.06em] sm:text-4xl">Crie sua conta.</h1>
           <p className="mt-4 text-sm leading-6 text-black/70">Em poucos segundos você já pode preparar o próximo sorteio.</p>
           <div className="mt-6"><AuthForm includeName submitLabel="Criar conta" isSubmitting={isSubmitting} error={error} onSubmit={handleSubmit} /></div>
@@ -64,8 +63,8 @@ export function RegisterPage() {
         </div>
         <div className="mx-auto mt-14 max-w-xl lg:mt-[clamp(72px,14vh,150px)]">
           <p className="inline-block border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-wider text-black shadow-[3px_3px_0_#151515]">Comece agora</p>
-          <h2 className="mt-6 text-4xl leading-[0.95] font-black tracking-[-0.07em] sm:text-6xl">Mais surpresa. Menos planilha.</h2>
-          <p className="mt-6 max-w-md text-base leading-7 text-white sm:text-lg">Organize o amigo secreto da turma sem confusão e deixe cada resultado protegido.</p>
+          <h2 className="mt-10 text-4xl leading-[0.95] font-black tracking-[-0.07em] sm:text-6xl">"É tão fácil! de fazer!"</h2>
+          <p className="max-w-md text-base leading-7 text-white sm:text-lg text-right">- Alguém, provavelmente</p>
         </div>
         <div className="mx-auto mt-12 grid max-w-sm grid-cols-3 gap-3" aria-hidden="true">
           {['Grupo', 'Convite', 'Sorteio'].map((label, index) => <div key={label} className={`border-2 border-black p-3 text-center text-xs font-black uppercase shadow-[4px_4px_0_#151515] ${index === 1 ? 'bg-red-600 text-white' : 'bg-white text-black'}`}>{label}</div>)}

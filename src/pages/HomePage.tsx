@@ -18,11 +18,11 @@ export function HomePage() {
           <p className="mb-5 inline-block border-2 border-black bg-green-100 px-3 py-1 text-xs font-black uppercase tracking-[0.16em] shadow-[3px_3px_0_#151515]">
             Sorteio sem complicação
           </p>
-          <h1 id="home-title" className="max-w-xl text-4xl leading-[0.95] font-black tracking-[-0.08em] sm:text-6xl lg:text-7xl">
-            A surpresa da turma começa aqui.
+          <h1 id="home-title" className="max-w-xl text-4xl leading-[0.95] font-black tracking-[-0.08em] my-6 sm:text-6xl lg:text-7xl">
+            Vamos criar um <span className="text-red-600">amigo secreto</span>?
           </h1>
           <p className="mt-6 max-w-lg text-base leading-7 text-black/70 sm:text-lg">
-            Crie um grupo, convide as pessoas e deixe o Amigo Secreto cuidar do sorteio. Simples, privado e divertido.
+            Crie um grupo, convide as pessoas e deixe o Sorteador cuidar do sorteio.. obviamente. Simples, privado e divertido!
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <Link className={primaryButton} to="/register">Começar agora</Link>
@@ -42,7 +42,7 @@ export function HomePage() {
               <span className="absolute -right-7 bottom-3 grid size-11 place-items-center border-2 border-black bg-amber-400 text-xl text-white">!</span>
             </div>
           </div>
-          <p className="mt-5 text-center text-xs text-white font-black uppercase tracking-[0.18em]">Quem será seu amigo secreto?</p>
+          <p className="mt-5 text-center text-xs text-white font-black uppercase tracking-[0.18em]">Quem será que eu tirei hein..</p>
         </div>
       </section>
 
@@ -50,7 +50,7 @@ export function HomePage() {
         {[
           ['01', 'Crie seu grupo', 'Dê um nome para o encontro e inclua a turma.'],
           ['02', 'Envie os convites', 'Compartilhe o acesso com cada participante.'],
-          ['03', 'Faça o sorteio', 'Cada pessoa vê seu resultado em particular.'],
+          ['03', 'Faça o sorteio', 'Cada pessoa vê seu resultado em particular (não vale bizoiar viu)'],
         ].map(([step, title, description]) => (
           <article key={step} className={`border-2 border-black p-5 shadow-[5px_5px_0_#151515] bg-white`}>
             <span className="inline-block border-2 border-black bg-amber-400 px-2 py-1 text-xs font-black">{step}</span>
