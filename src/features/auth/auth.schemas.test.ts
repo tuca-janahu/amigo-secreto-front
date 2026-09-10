@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { credentialsSchema } from './auth.schemas'
+import { authFormSchema, credentialsSchema } from './auth.schemas'
 
 describe('credentialsSchema', () => {
   it('accepts valid email and password', () => {
@@ -12,5 +12,15 @@ describe('credentialsSchema', () => {
     const result = credentialsSchema.safeParse({ email: 'invalido', password: '1234567' })
 
     expect(result.success).toBe(false)
+  })
+
+  it('rejects a password confirmation that does not match', () => {
+    expect(
+      authFormSchema.safeParse({
+        email: 'usuario@exemplo.com',
+        password: 'senha-segura',
+        confirmPassword: 'outra-senha',
+      }).success,
+    ).toBe(false)
   })
 })

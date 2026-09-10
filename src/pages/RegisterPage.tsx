@@ -14,13 +14,13 @@ export function RegisterPage() {
   const [error, setError] = useState<string>()
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  async function handleSubmit(credentials: AuthFormData) {
+  async function handleSubmit({ name, email, password }: AuthFormData) {
     setError(undefined)
     setIsSubmitting(true)
 
     try {
-      if (!credentials.name) return
-      await authService.register({ ...credentials, name: credentials.name })
+      if (!name) return
+      await authService.register({ name, email, password })
 
       try {
         await queryClient.invalidateQueries({ queryKey: authQueryKey })

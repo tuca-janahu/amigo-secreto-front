@@ -13,5 +13,16 @@ export const registrationSchema = credentialsSchema.extend({
 
 export type RegistrationFormData = z.infer<typeof registrationSchema>
 
-export const authFormSchema = credentialsSchema.extend({ name: z.string().optional() })
+export const authFormSchema = credentialsSchema.extend({
+  name: z.string().optional(),
+  confirmPassword: z.string().optional(),
+}).superRefine(({ password, confirmPassword }, context) => {
+  if (confirmPassword !== undefined && confirmPassword !== password) {
+    context.addIssue({
+      code: 'custom',
+      path: ['confirmPassword'],
+      message: 'As senhas não coincidem.',
+    })
+  }
+})
 export type AuthFormData = z.infer<typeof authFormSchema>
