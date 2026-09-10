@@ -1,23 +1,24 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import type { CredentialsFormData } from './auth.schemas'
-import { credentialsSchema } from './auth.schemas'
+import type { AuthFormData } from './auth.schemas'
+import { authFormSchema } from './auth.schemas'
 
 type AuthFormProps = {
   submitLabel: string
   isSubmitting: boolean
   error?: string
-  onSubmit: (data: CredentialsFormData) => Promise<void>
+  includeName?: boolean
+  onSubmit: (data: AuthFormData) => Promise<void>
 }
 
-export function AuthForm({ submitLabel, isSubmitting, error, onSubmit }: AuthFormProps) {
+export function AuthForm({ submitLabel, isSubmitting, error, includeName = false, onSubmit }: AuthFormProps) {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<CredentialsFormData>({
-    resolver: zodResolver(credentialsSchema),
-    defaultValues: { email: '', password: '' },
+  } = useForm<AuthFormData>({
+    resolver: zodResolver(authFormSchema),
+    defaultValues: { name: '', email: '', password: '' },
   })
 
   const inputClassName = (hasError: boolean) =>
@@ -29,6 +30,12 @@ export function AuthForm({ submitLabel, isSubmitting, error, onSubmit }: AuthFor
 
   return (
     <form className="grid gap-2 font-mono" onSubmit={handleSubmit(onSubmit)} noValidate>
+      {includeName && <>
+        <label className="mt-3 text-xs font-black uppercase tracking-wider" htmlFor="name">Nome</label>
+        <input id="name" className={inputClassName(Boolean(errors.name))} type="text" autoComplete="name" aria-invalid={Boolean(errors.name)} aria-describedby={errors.name ? 'name-error' : undefined} {...register('name', { validate: (value) => Boolean(value?.trim()) || 'Informe seu nome.', maxLength: { value: 100, message: 'Use no máximo 100 caracteres.' } })} />
+        {errors.name && <p id="name-error" className="border-2 border-red-700 bg-red-600 px-3 py-2 text-xs font-bold text-yellow-300" role="alert">{errors.name.message}</p>}
+      </>}
+
       <label className="mt-3 text-xs font-black uppercase tracking-wider" htmlFor="email">E-mail</label>
       <input id="email" className={inputClassName(Boolean(errors.email))} type="email" autoComplete="email" aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? 'email-error' : undefined} {...register('email')} />
       {errors.email && <p id="email-error" className="border-2 border-red-700 bg-red-600 px-3 py-2 text-xs font-bold text-yellow-300" role="alert">{errors.email.message}</p>}

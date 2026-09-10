@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { PixelBrand } from '../components/PixelBrand'
 import { AuthForm } from '../features/auth/AuthForm'
 import { authQueryKey, authQueryOptions } from '../features/auth/auth.queries'
-import type { CredentialsFormData } from '../features/auth/auth.schemas'
+import type { AuthFormData } from '../features/auth/auth.schemas'
 import { ApiError } from '../lib/http'
 import { authService } from '../services/auth'
 
@@ -14,12 +14,12 @@ export function LoginPage() {
   const [error, setError] = useState<string>()
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  async function handleSubmit(credentials: CredentialsFormData) {
+  async function handleSubmit({ email, password }: AuthFormData) {
     setError(undefined)
     setIsSubmitting(true)
 
     try {
-      await authService.login(credentials)
+      await authService.login({ email, password })
       await queryClient.invalidateQueries({ queryKey: authQueryKey })
       await queryClient.fetchQuery(authQueryOptions)
       navigate('/dashboard', { replace: true })

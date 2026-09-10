@@ -5,7 +5,7 @@ export const authQueryKey = ['auth', 'me'] as const
 
 export const authQueryOptions = queryOptions({
   queryKey: authQueryKey,
-  queryFn: authService.me,
+  queryFn: () => authService.me(),
   retry: false,
   staleTime: 5 * 60 * 1000,
 })

@@ -6,3 +6,12 @@ export const credentialsSchema = z.object({
 })
 
 export type CredentialsFormData = z.infer<typeof credentialsSchema>
+
+export const registrationSchema = credentialsSchema.extend({
+  name: z.string().trim().min(1, 'Informe seu nome.').max(100, 'Use no máximo 100 caracteres.'),
+})
+
+export type RegistrationFormData = z.infer<typeof registrationSchema>
+
+export const authFormSchema = credentialsSchema.extend({ name: z.string().optional() })
+export type AuthFormData = z.infer<typeof authFormSchema>

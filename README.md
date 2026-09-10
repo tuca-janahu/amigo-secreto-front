@@ -1,6 +1,6 @@
 # Amigo Secreto — Frontend
 
-Frontend da aplicação de Amigo Secreto, separado do backend. Esta primeira versão implementa cadastro, login, sessão por cookie HTTP-only e uma área autenticada inicial.
+Frontend da aplicação de Amigo Secreto, separado do backend. Implementa autenticação por cookie HTTP-only, gestão de grupos e participantes, restrições, sorteio, convites e a área pública do participante com revelação e mural anônimo.
 
 ## Requisitos
 
@@ -38,3 +38,16 @@ pnpm build
 - `POST /auth/login`
 - `GET /auth/me`
 - `POST /auth/logout`
+- `GET|POST /groups`
+- `GET|PATCH /groups/:groupId`
+- `GET|POST|PATCH|DELETE /groups/:groupId/participants`
+- `POST /groups/:groupId/participants/import`
+- `GET|POST|DELETE /groups/:groupId/restrictions`
+- `GET /groups/:groupId/sorteio/viability`
+- `POST /groups/:groupId/sorteio`
+- `GET /groups/:groupId/invitations`
+- `POST /groups/:groupId/participants/:participantId/invite/resend`
+- `POST /groups/:groupId/invitations/resend-pending`
+- `GET /public/participant-access/:token`
+- `POST /public/participant-access/:token/reveal`
+- `GET|POST /public/participant-access/:token/messages`

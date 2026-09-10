@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { PixelBrand } from '../components/PixelBrand'
 import { AuthForm } from '../features/auth/AuthForm'
 import { authQueryKey, authQueryOptions } from '../features/auth/auth.queries'
-import type { CredentialsFormData } from '../features/auth/auth.schemas'
+import type { AuthFormData } from '../features/auth/auth.schemas'
 import { ApiError } from '../lib/http'
 import { authService } from '../services/auth'
 
@@ -14,12 +14,13 @@ export function RegisterPage() {
   const [error, setError] = useState<string>()
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  async function handleSubmit(credentials: CredentialsFormData) {
+  async function handleSubmit(credentials: AuthFormData) {
     setError(undefined)
     setIsSubmitting(true)
 
     try {
-      await authService.register(credentials)
+      if (!credentials.name) return
+      await authService.register({ ...credentials, name: credentials.name })
 
       try {
         await queryClient.invalidateQueries({ queryKey: authQueryKey })
@@ -51,7 +52,7 @@ export function RegisterPage() {
           <p className="text-xs font-black uppercase tracking-[0.18em] text-green-900">Nova jornada</p>
           <h1 id="register-title" className="mt-3 text-3xl leading-none font-black tracking-[-0.06em] sm:text-4xl">Crie sua conta.</h1>
           <p className="mt-4 text-sm leading-6 text-black/70">Em poucos segundos você já pode preparar o próximo sorteio.</p>
-          <div className="mt-6"><AuthForm submitLabel="Criar conta" isSubmitting={isSubmitting} error={error} onSubmit={handleSubmit} /></div>
+          <div className="mt-6"><AuthForm includeName submitLabel="Criar conta" isSubmitting={isSubmitting} error={error} onSubmit={handleSubmit} /></div>
           <p className="mt-7 text-center text-xs leading-6 text-black/70">Já tem uma conta? <Link className="font-black uppercase text-red-600 underline decoration-2 underline-offset-4" to="/login">Entrar</Link></p>
         </div>
       </section>

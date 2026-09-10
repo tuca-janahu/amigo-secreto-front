@@ -1,1 +1,15 @@
 @import "tailwindcss";
+
+@keyframes reveal-shake {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  20% { transform: translateX(-5px) rotate(-2deg); }
+  40% { transform: translateX(5px) rotate(2deg); }
+  60% { transform: translateX(-3px) rotate(-1deg); }
+  80% { transform: translateX(3px) rotate(1deg); }
+}
+
+.reveal-shake { animation: reveal-shake 300ms steps(2, end) infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-shake { animation: none; }
+}

@@ -5,24 +5,30 @@ export type Credentials = {
   password: string
 }
 
+export type Registration = Credentials & {
+  name: string
+}
+
 export type AuthenticatedUser = {
-  id: string | number
-  name?: string
+  id: string
+  name: string
   email: string
 }
 
+type AuthResponse = { user: AuthenticatedUser }
+
 export const authService = {
-  register: (credentials: Credentials) =>
-    http<void>('/auth/register', {
+  register: (credentials: Registration) =>
+    http<AuthResponse>('/auth/register', {
       method: 'POST',
       body: credentials,
     }),
   login: (credentials: Credentials) =>
-    http<void>('/auth/login', {
+    http<AuthResponse>('/auth/login', {
       method: 'POST',
       body: credentials,
     }),
-  me: () => http<AuthenticatedUser>('/auth/me'),
+  me: async () => (await http<AuthResponse>('/auth/me')).user,
   logout: () =>
     http<void>('/auth/logout', {
       method: 'POST',
