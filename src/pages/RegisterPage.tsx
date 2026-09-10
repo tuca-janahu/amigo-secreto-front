@@ -59,7 +59,7 @@ export function RegisterPage() {
 
       <section className="order-1 relative overflow-hidden bg-green-900 px-6 py-7 text-white sm:px-10 lg:order-2 lg:px-[clamp(40px,7vw,110px)] lg:py-10">
         <div className="flex items-center gap-4">
-          <Link className="border-2 border-black bg-white px-3 py-2 text-xs font-black uppercase text-black shadow-[3px_3px_0_#151515] transition hover:bg-green-100" to="/">← Voltar</Link>
+          <Link className="inline-flex cursor-pointer items-center justify-center border-2 border-black bg-white px-3 py-2 text-xs font-black uppercase text-black shadow-[3px_3px_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0_#151515]" to="/">← Voltar</Link>
           <PixelBrand light />
         </div>
         <div className="mx-auto mt-14 max-w-xl lg:mt-[clamp(72px,14vh,150px)]">

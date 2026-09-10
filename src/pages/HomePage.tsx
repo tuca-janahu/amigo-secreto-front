@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom'
 import { PixelBrand } from '../components/PixelBrand'
 
-const primaryButton = 'inline-flex items-center justify-center border-2 border-black bg-green-900 px-5 py-3 font-mono text-sm font-black uppercase tracking-wider text-white shadow-[4px_4px_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_#151515] focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-black'
+const primaryButton = 'inline-flex cursor-pointer items-center justify-center border-2 border-black bg-green-900 px-5 py-3 font-mono text-sm font-black uppercase tracking-wider text-white shadow-[4px_4px_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_#151515] focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-black'
 
 export function HomePage() {
   return (
     <main className="min-h-screen overflow-hidden bg-amber-100/50 px-5 py-6 font-mono text-black sm:px-8 lg:px-14">
       <header className="mx-auto flex max-w-6xl items-center justify-between gap-4">
         <PixelBrand />
-        <Link className="border-2 border-black bg-red-600 px-4 py-2 text-xs font-black uppercase tracking-wider shadow-[3px_3px_0_#151515] transition hover:bg-amber-400 text-white" to="/login">
+        <Link className="inline-flex cursor-pointer items-center justify-center border-2 border-black bg-green-900 px-4 py-2 text-xs font-black uppercase tracking-wider text-white shadow-[3px_3px_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-green-800 hover:shadow-[1px_1px_0_#151515]" to="/login">
           Entrar
         </Link>
       </header>
@@ -26,7 +26,7 @@ export function HomePage() {
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <Link className={primaryButton} to="/register">Começar agora</Link>
-            <Link className="inline-flex items-center justify-center border-2 border-black bg-white px-5 py-3 text-sm font-black text-red-600 uppercase tracking-wider shadow-[4px_4px_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_#151515]" to="/login">
+            <Link className="inline-flex cursor-pointer items-center justify-center border-2 border-black bg-white px-5 py-3 text-sm font-black text-red-600 uppercase tracking-wider shadow-[4px_4px_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_#151515]" to="/login">
               Já tenho conta
             </Link>
           </div>
