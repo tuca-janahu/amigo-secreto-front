@@ -50,7 +50,7 @@ export function HomePage() {
         {[
           ['01', 'Crie seu grupo', 'Dê um nome para o encontro e inclua a turma.'],
           ['02', 'Envie os convites', 'Compartilhe o acesso com cada participante.'],
-          ['03', 'Faça o sorteio', 'Cada pessoa vê seu resultado em particular (não vale bizoiar viu)'],
+          ['03', 'Faça o sorteio', 'Cada pessoa vê seu resultado em particular e podem interagir através de um mural anônimo.'],
         ].map(([step, title, description]) => (
           <article key={step} className={`border-2 border-black p-5 shadow-[5px_5px_0_#151515] bg-white`}>
             <span className="inline-block border-2 border-black bg-amber-400 px-2 py-1 text-xs font-black">{step}</span>
