@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+.password-mask-input::selection {
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
 @keyframes reveal-shake {
   0%, 100% { transform: translateX(0) rotate(0); }
   20% { transform: translateX(-5px) rotate(-2deg); }
