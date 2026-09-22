@@ -39,7 +39,7 @@ pnpm build
 - `GET /auth/me`
 - `POST /auth/logout`
 - `GET|POST /groups`
-- `GET|PATCH /groups/:groupId`
+- `GET|PATCH|DELETE /groups/:groupId`
 - `GET|POST|PATCH|DELETE /groups/:groupId/participants`
 - `POST /groups/:groupId/participants/import`
 - `GET|POST|DELETE /groups/:groupId/restrictions`

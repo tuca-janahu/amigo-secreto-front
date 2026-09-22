@@ -19,4 +19,6 @@ export const groupsService = {
     (await http<{ group: Group }>('/groups', { method: 'POST', body: { name } })).group,
   update: async (groupId: string, name: string) =>
     (await http<{ group: Group }>(`/groups/${groupId}`, { method: 'PATCH', body: { name } })).group,
+  remove: (groupId: string) =>
+    http<void>(`/groups/${groupId}`, { method: 'DELETE' }),
 }

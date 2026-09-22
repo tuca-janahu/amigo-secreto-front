@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate } from 'react-router-dom'
-import { PixelBrand } from '../components/PixelBrand'
+import { PixelBrand } from '../components/PixelIcons'
 import { AuthForm } from '../features/auth/AuthForm'
 import { authQueryKey, authQueryOptions } from '../features/auth/auth.queries'
 import type { AuthFormData } from '../features/auth/auth.schemas'

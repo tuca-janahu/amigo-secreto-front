@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { PixelBrand } from '../components/PixelBrand'
+import { PixelBrand } from '../components/PixelIcons'
 
 const primaryButton = 'inline-flex cursor-pointer items-center justify-center border-2 border-black bg-green-900 px-5 py-3 font-mono text-sm font-black uppercase tracking-wider text-white shadow-[4px_4px_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_#151515] focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-black'
 
