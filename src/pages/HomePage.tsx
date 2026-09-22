@@ -5,15 +5,15 @@ const primaryButton = 'inline-flex cursor-pointer items-center justify-center bo
 
 export function HomePage() {
   return (
-    <main className="min-h-screen overflow-hidden bg-amber-100/50 px-5 py-6 font-mono text-black sm:px-8 lg:px-14">
-      <header className="mx-auto flex max-w-6xl items-center justify-between gap-4">
+    <main className="min-h-screen overflow-hidden bg-amber-100/50 px-5 py-6 font-mono text-black sm:px-8">
+      <header className="mx-auto flex max-w-7xl items-center justify-between gap-4">
         <PixelBrand />
         <Link className="inline-flex cursor-pointer items-center justify-center border-2 border-black bg-green-900 px-4 py-2 text-xs font-black uppercase tracking-wider text-white shadow-[3px_3px_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-green-800 hover:shadow-[1px_1px_0_#151515]" to="/login">
           Entrar
         </Link>
       </header>
 
-      <section className="mx-auto grid max-w-6xl items-center gap-10 py-16 lg:grid-cols-[1.05fr_0.95fr] lg:py-24" aria-labelledby="home-title">
+      <section className="mx-auto grid max-w-7xl items-center gap-10 py-16 lg:grid-cols-[1.05fr_0.95fr] lg:py-24" aria-labelledby="home-title">
         <div>
           <p className="mb-5 inline-block border-2 border-black bg-green-100 px-3 py-1 text-xs font-black uppercase tracking-[0.16em] shadow-[3px_3px_0_#151515]">
             Sorteio sem complicação

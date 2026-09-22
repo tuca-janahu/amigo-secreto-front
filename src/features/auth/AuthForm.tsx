@@ -40,7 +40,7 @@ export function AuthForm({ submitLabel, isSubmitting, error, includeName = false
       <Form.Label className="mt-3" htmlFor="password">Senha</Form.Label>
       <div className="relative">
         <Form.Input id="password" className="py-3 pr-12 placeholder:text-black/50" type={showPassword ? 'text' : 'password'} autoComplete={includeName ? 'new-password' : 'current-password'} aria-invalid={Boolean(errors.password)} aria-describedby={errors.password ? 'password-error' : undefined} {...register('password')} />
-        <button className="absolute inset-y-1 right-1 grid size-10 cursor-pointer place-items-center border-2 border-black bg-white text-black transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0_#151515] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-black" type="button" aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'} aria-pressed={showPassword} onClick={() => setShowPassword((value) => !value)}>
+        <button className="absolute inset-y-0 right-2 grid w-8 cursor-pointer place-items-center border-0 bg-transparent p-0 text-black hover:opacity-70 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-black" type="button" aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'} aria-pressed={showPassword} onClick={() => setShowPassword((value) => !value)}>
           <EyeIcon hidden={showPassword} />
         </button>
       </div>
@@ -50,7 +50,7 @@ export function AuthForm({ submitLabel, isSubmitting, error, includeName = false
         <Form.Label className="mt-3" htmlFor="confirm-password">Confirmar senha</Form.Label>
         <div className="relative">
           <Form.Input id="confirm-password" className="py-3 pr-12 placeholder:text-black/50" type={showConfirmation ? 'text' : 'password'} autoComplete="new-password" aria-invalid={Boolean(errors.confirmPassword)} aria-describedby={errors.confirmPassword ? 'confirm-password-error' : undefined} {...register('confirmPassword')} />
-          <button className="absolute inset-y-1 right-1 grid size-10 cursor-pointer place-items-center border-2 border-black bg-white text-black transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0_#151515] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-black" type="button" aria-label={showConfirmation ? 'Ocultar confirmação de senha' : 'Mostrar confirmação de senha'} aria-pressed={showConfirmation} onClick={() => setShowConfirmation((value) => !value)}>
+          <button className="absolute inset-y-0 right-2 grid w-8 cursor-pointer place-items-center border-0 bg-transparent p-0 text-black hover:opacity-70 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-black" type="button" aria-label={showConfirmation ? 'Ocultar confirmação de senha' : 'Mostrar confirmação de senha'} aria-pressed={showConfirmation} onClick={() => setShowConfirmation((value) => !value)}>
             <EyeIcon hidden={showConfirmation} />
           </button>
         </div>
@@ -68,10 +68,10 @@ export function AuthForm({ submitLabel, isSubmitting, error, includeName = false
 
 function EyeIcon({ hidden }: { hidden: boolean }) {
   return (
-    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="size-5">
-      <path d="M2.5 12s3.25-5 9.5-5 9.5 5 9.5 5-3.25 5-9.5 5-9.5-5-9.5-5Z" />
-      <circle cx="12" cy="12" r="2.5" />
-      {hidden && <path d="m4 4 16 16" />}
+    <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" className="size-6">
+      <path d={hidden
+        ? 'M22 22h-2v-2h2v2Zm-6-2H8v-2h8v2Zm4 0h-2v-2h2v2ZM8 18H4v-2h4v2Zm10 0h-2v-2h2v2ZM4 16H2v-2h2v2Zm6-6h2v2h2v2h2v2h-6v-2H8V8h2v2Zm12 6h-2v-2h2v2ZM2 14H0v-4h2v4Zm22 0h-2v-4h2v4Zm-8-2h-2v-2h2v2ZM4 10H2V8h2v2Zm10 0h-2V8h2v2Zm8 0h-2V8h2v2ZM6 6h2v2H4V4h2v2Zm14 2h-4V6h4v2Zm-4-2h-6V4h6v2ZM4 4H2V2h2v2Z'
+        : 'M16 20H8v-2h8v2Zm-8-2H4v-2h4v2Zm12 0h-4v-2h4v2ZM4 16H2v-2h2v2Zm10-6h-2v2h2v-2h2v4h-2v2h-4v-2H8v-4h2V8h4v2Zm8 6h-2v-2h2v2ZM2 14H0v-4h2v4Zm22 0h-2v-4h2v4ZM4 10H2V8h2v2Zm18 0h-2V8h2v2ZM8 8H4V6h4v2Zm12 0h-4V6h4v2Zm-4-2H8V4h8v2Z'} />
     </svg>
   )
 }
