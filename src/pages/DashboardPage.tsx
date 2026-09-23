@@ -3,16 +3,17 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
-import { PixelBrand } from '../components/PixelIcons'
+import { PixelBrand, DeleteIcon } from '../components/PixelIcons'
 import { Button } from '../components/Button'
 import { Form } from '../components/Form'
 import { authQueryKey, useAuth } from '../features/auth/auth.queries'
+import { DeleteGroupModal } from '../features/groups/DeleteGroupModal'
 import { groupsKey, groupsQueryOptions } from '../features/groups/group.queries'
 import { groupSchema, type GroupFormData } from '../features/groups/group.schemas'
 import { getErrorMessage } from '../lib/errors'
 import { formErrorMessage, openGroupButton, panelClass } from '../lib/styles'
 import { authService } from '../services/auth'
-import { groupsService, type GroupStatus } from '../services/groups'
+import { groupsService, type Group, type GroupStatus } from '../services/groups'
 
 const statusLabel: Record<GroupStatus, string> = {
   DRAFT: 'Rascunho', READY: 'Pronto', SORTEADO: 'Sorteado', CANCELLED: 'Cancelado',
@@ -29,6 +30,7 @@ export function DashboardPage() {
   const navigate = useNavigate()
   const [isLeaving, setIsLeaving] = useState(false)
   const [showCreate, setShowCreate] = useState(false)
+  const [groupToDelete, setGroupToDelete] = useState<Group | null>(null)
   const { register, handleSubmit, reset, formState: { errors } } = useForm<GroupFormData>({
     resolver: zodResolver(groupSchema), defaultValues: { name: '' },
   })
@@ -38,6 +40,13 @@ export function DashboardPage() {
       await queryClient.invalidateQueries({ queryKey: groupsKey })
       reset()
       navigate(`/dashboard/groups/${group.id}`)
+    },
+  })
+  const deleteGroup = useMutation({
+    mutationFn: (groupId: string) => groupsService.remove(groupId),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: groupsKey })
+      setGroupToDelete(null)
     },
   })
 
@@ -87,13 +96,39 @@ export function DashboardPage() {
                   <span className={`inline-block border-2 border-black px-2 py-1 text-xs font-black uppercase ${group.status === 'SORTEADO' ? 'bg-green-900 text-white' : 'bg-amber-400'}`}>{statusLabel[group.status]}</span>
                   <h2 className="mt-5 break-words text-2xl font-black">{group.name}</h2>
                   <p className="mt-3 text-xs text-black/60">Criado em {formatDate(group.createdAt)}</p>
-                  <Link className={`${openGroupButton} mt-6`} to={`/dashboard/groups/${group.id}`}>Abrir grupo</Link>
+                  <div className="mt-5 flex flex-wrap justify-between gap-2">
+                    <Link className={`${openGroupButton} mt-6`} to={`/dashboard/groups/${group.id}`}>Abrir grupo</Link>
+
+                    {group.status === 'DRAFT' && (
+                      <Button
+                        className="mt-6"
+                        variant="danger"
+                        aria-label={`Excluir grupo ${group.name}`}
+                        onClick={() => {
+                          deleteGroup.reset()
+                          setGroupToDelete(group)
+                        }}
+                      >
+                        <DeleteIcon />
+                      </Button>
+                    )}
+                  </div>
                 </article>
               ))}
             </section>
           )}
         </div>
       </section>
+      <DeleteGroupModal
+        groupName={groupToDelete?.name ?? ''}
+        isOpen={groupToDelete !== null}
+        isDeleting={deleteGroup.isPending}
+        error={deleteGroup.isError ? deleteGroup.error : undefined}
+        onCancel={() => setGroupToDelete(null)}
+        onConfirm={() => {
+          if (groupToDelete) deleteGroup.mutate(groupToDelete.id)
+        }}
+      />
     </main>
   )
 }

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate } from 'react-router-dom'
-import { PixelBrand } from '../components/PixelIcons'
+import { CancelIcon, PixelBrand } from '../components/PixelIcons'
 import { AuthForm } from '../features/auth/AuthForm'
 import { authQueryKey, authQueryOptions } from '../features/auth/auth.queries'
 import type { AuthFormData } from '../features/auth/auth.schemas'
@@ -46,12 +46,12 @@ export function LoginPage() {
           <h1 className="mt-6 text-4xl leading-[0.95] font-black tracking-[-0.07em] sm:text-6xl">Tá esperando o que?</h1>
           <p className="mt-6 max-w-md text-base leading-7 text-white sm:text-lg">Entre na sua conta para acompanhar os grupos e deixar a surpresa acontecer.</p>
         </div>
-        <div className="relative mx-auto mt-12 max-w-sm border-2 border-black bg-green-900 p-5 shadow-[7px_7px_0_#151515]" aria-hidden="true">
+        <div className="relative mx-auto mt-12 max-w-sm border-2 border-black bg-slate-300 p-5 shadow-[7px_7px_0_#151515]" aria-hidden="true">
           <div className="border-2 border-dashed border-black bg-white p-5 text-black">
             <p className="text-xs font-black uppercase tracking-wider">(essa mensagem é protegida ok)</p>
-            <p className="mt-4 border-2 border-black bg-red-600 p-4 text-center text-xl font-black text-white shadow-[4px_4px_0_#151515]">Seu amigo secreto é...</p>
+            <p className="mt-4 border-2 border-black bg-green-900/50 p-4 text-center text-xl font-black text-white shadow-[4px_4px_0_#151515]">Seu amigo secreto é...</p>
           </div>
-          <span className="absolute -right-4 -top-4 grid size-9 place-items-center border-2 border-black bg-white text-xl text-black">*</span>
+          <span className="absolute -right-4 -top-4 grid size-9 place-items-center border-2 border-black bg-red-600 text-xl text-white"><CancelIcon /></span>
         </div>
       </section>
 

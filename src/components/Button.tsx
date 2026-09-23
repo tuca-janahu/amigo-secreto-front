@@ -3,6 +3,7 @@ import type { ButtonHTMLAttributes } from 'react'
 const variants = {
   primary: 'bg-green-900 text-white shadow-[4px_4px_0_#151515] enabled:hover:shadow-[2px_2px_0_#151515]',
   secondary: 'bg-white text-black shadow-[3px_3px_0_#151515] enabled:hover:shadow-[2px_2px_0_#151515]',
+  tertiary: 'bg-amber-400 text-amber-950 shadow-[3px_3px_0_#151515] enabled:hover:shadow-[1px_1px_0_#151515]',
   danger: 'bg-red-600 text-white shadow-[3px_3px_0_#151515] enabled:hover:shadow-[1px_1px_0_#151515]',
   exit: 'bg-white text-black shadow-[3px_3px_0_#151515] enabled:hover:bg-red-600 enabled:hover:text-white enabled:hover:shadow-[1px_1px_0_#151515]',
 } as const

@@ -6,6 +6,7 @@ import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { Button } from '../components/Button'
 import { Form } from '../components/Form'
 import { DrawSection } from '../features/groups/DrawSection'
+import { DeleteGroupModal } from '../features/groups/DeleteGroupModal'
 import { InvitationsSection } from '../features/groups/InvitationsSection'
 import { ParticipantsSection } from '../features/groups/ParticipantsSection'
 import { RestrictionsSection } from '../features/groups/RestrictionsSection'
@@ -60,6 +61,13 @@ function GroupContent({ groupId }: { groupId: string }) {
       <div className="mt-8">{editable ? <DrawSection groupId={groupId} /> : group.data.status === 'SORTEADO' ? <InvitationsSection groupId={groupId} /> : null}</div>
       {editable && <section className="mt-8 border-2 border-red-700 bg-red-50 p-5 shadow-[6px_6px_0_#991b1b] sm:p-6" aria-labelledby="delete-group-title"><h2 id="delete-group-title" className="text-xl font-black uppercase text-red-700">Excluir grupo</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-red-950">Exclua permanentemente este grupo em rascunho, incluindo participantes e restrições. Esta ação não pode ser desfeita.</p><Button className="mt-5 gap-2" variant="danger" onClick={() => { remove.reset(); setConfirmingDelete(true) }}><DeleteIcon />Excluir grupo</Button></section>}
     </div>
-    {confirmingDelete && <div className="fixed inset-0 z-50 grid place-items-center bg-black/60 p-5" role="presentation"><div className="w-full max-w-lg border-2 border-black bg-white p-6 shadow-[8px_8px_0_#151515]" role="dialog" aria-modal="true" aria-labelledby="delete-group-dialog-title" aria-describedby="delete-group-dialog-description"><h2 id="delete-group-dialog-title" className="text-2xl font-black uppercase">Excluir grupo?</h2><p id="delete-group-dialog-description" className="mt-4 text-sm leading-6">O grupo <strong>{group.data.name}</strong>, seus participantes e suas restrições serão excluídos permanentemente.</p>{remove.isError && <p className={`${formErrorMessage} mt-4 text-sm`} role="alert">{getErrorMessage(remove.error, 'Não foi possível excluir o grupo.')}</p>}<div className="mt-6 flex flex-wrap gap-3"><Button className="gap-2" variant="secondary" disabled={remove.isPending} onClick={() => setConfirmingDelete(false)}><CancelIcon />Cancelar</Button><Button className="gap-2" variant="danger" disabled={remove.isPending} onClick={() => remove.mutate()}><DeleteIcon />{remove.isPending ? 'Excluindo...' : 'Excluir grupo'}</Button></div></div></div>}
+    <DeleteGroupModal
+      groupName={group.data.name}
+      isOpen={confirmingDelete}
+      isDeleting={remove.isPending}
+      error={remove.isError ? remove.error : undefined}
+      onCancel={() => setConfirmingDelete(false)}
+      onConfirm={() => remove.mutate()}
+    />
   </main>
 }

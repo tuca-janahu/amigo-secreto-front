@@ -56,19 +56,17 @@ export function RegisterPage() {
         </div>
       </section>
 
-      <section className="order-1 relative overflow-hidden bg-green-900 px-6 py-7 text-white sm:px-10 lg:order-2 lg:px-[clamp(40px,7vw,110px)] lg:py-10">
-        <div className="flex items-center gap-4">
+      <section className="order-1 relative overflow-hidden bg-green-900 px-6 py-7 text-white sm:px-10 lg:py-10">
+        <div className="flex items-center m-auto gap-4">
           <Link className="inline-flex cursor-pointer items-center justify-center border-2 border-black bg-white px-3 py-2 text-xs font-black uppercase text-black shadow-[3px_3px_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0_#151515]" to="/">← Voltar</Link>
           <PixelBrand light />
         </div>
-        <div className="mx-auto mt-14 max-w-xl lg:mt-[clamp(72px,14vh,150px)]">
+        <div className="mx-auto mt-14 flex max-w-xl flex-col items-end text-right lg:mt-[clamp(72px,14vh,150px)]">
           <p className="inline-block border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-wider text-black shadow-[3px_3px_0_#151515]">Comece agora</p>
-          <h2 className="mt-10 text-4xl leading-[0.95] font-black tracking-[-0.07em] sm:text-6xl">"É tão fácil! de fazer!"</h2>
-          <p className="max-w-md text-base leading-7 text-white sm:text-lg text-right">- Alguém, provavelmente</p>
+          <h2 className="mt-10 text-4xl font-black sm:text-5xl md:text-nowrap lg:text-wrap xl:text-nowrap italic">"É tão fácil de fazer!"</h2>
+          <p className="mt-4 max-w-md text-base text-white/70 sm:mt-10 sm:text-lg">- Alguém, provavelmente</p>
         </div>
-        <div className="mx-auto mt-12 grid max-w-sm grid-cols-3 gap-3" aria-hidden="true">
-          {['Grupo', 'Convite', 'Sorteio'].map((label, index) => <div key={label} className={`border-2 border-black p-3 text-center text-xs font-black uppercase shadow-[4px_4px_0_#151515] ${index === 1 ? 'bg-red-600 text-white' : 'bg-white text-black'}`}>{label}</div>)}
-        </div>
+
       </section>
     </main>
   )
