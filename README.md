@@ -38,6 +38,7 @@ pnpm build
 - `POST /auth/login`
 - `GET /auth/me`
 - `POST /auth/logout`
+- `POST /feedback`
 - `GET|POST /groups`
 - `GET|PATCH|DELETE /groups/:groupId`
 - `GET|POST|PATCH|DELETE /groups/:groupId/participants`
