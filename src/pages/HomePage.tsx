@@ -1,16 +1,14 @@
-import { Link } from 'react-router-dom'
+import { ButtonLink } from '../components/Button'
 import { PixelBrand } from '../components/PixelIcons'
-
-const primaryButton = 'inline-flex cursor-pointer items-center justify-center border-2 border-black bg-green-900 px-5 py-3 font-mono text-sm font-black uppercase tracking-wider text-white shadow-[4px_4px_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_#151515] focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-black'
 
 export function HomePage() {
   return (
     <main className="min-h-screen overflow-hidden bg-amber-100/50 px-5 py-6 font-mono text-black sm:px-8">
       <header className="mx-auto flex max-w-7xl items-center justify-between gap-4">
         <PixelBrand />
-        <Link className="inline-flex cursor-pointer items-center justify-center border-2 border-black bg-green-900 px-4 py-2 text-xs font-black uppercase tracking-wider text-white shadow-[3px_3px_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-green-800 hover:shadow-[1px_1px_0_#151515]" to="/login">
+        <ButtonLink className="shadow-[3px_3px_0_#151515] hover:shadow-[1px_1px_0_#151515]" size="small" to="/login">
           Entrar
-        </Link>
+        </ButtonLink>
       </header>
 
       <section className="mx-auto grid max-w-7xl items-center gap-10 py-16 lg:grid-cols-[1.05fr_0.95fr] lg:py-24" aria-labelledby="home-title">
@@ -25,10 +23,10 @@ export function HomePage() {
             Crie um grupo, convide as pessoas e deixe o Sorteador cuidar do sorteio.. obviamente. Simples, privado e divertido!
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
-            <Link className={primaryButton} to="/register">Começar agora</Link>
-            <Link className="inline-flex cursor-pointer items-center justify-center border-2 border-black bg-white px-5 py-3 text-sm font-black text-red-600 uppercase tracking-wider shadow-[4px_4px_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_#151515]" to="/login">
+            <ButtonLink size="large" to="/register">Começar agora</ButtonLink>
+            <ButtonLink className="text-red-600 shadow-[4px_4px_0_#151515]" size="large" variant="secondary" to="/login">
               Já tenho conta
-            </Link>
+            </ButtonLink>
           </div>
         </div>
 

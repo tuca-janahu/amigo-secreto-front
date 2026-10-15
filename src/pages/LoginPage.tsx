@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate } from 'react-router-dom'
-import { CancelIcon, PixelBrand } from '../components/PixelIcons'
+import { ButtonLink } from '../components/Button'
+import { BackIcon, CancelIcon, PixelBrand } from '../components/PixelIcons'
 import { AuthForm } from '../features/auth/AuthForm'
 import { authQueryKey, authQueryOptions } from '../features/auth/auth.queries'
 import type { AuthFormData } from '../features/auth/auth.schemas'
@@ -38,7 +39,9 @@ export function LoginPage() {
     <main className="grid min-h-screen font-mono text-black lg:grid-cols-[1fr_minmax(430px,0.85fr)]">
       <section className="relative overflow-hidden bg-amber-400 px-6 py-7 text-white sm:px-10 lg:px-[clamp(40px,7vw,110px)] lg:py-10">
         <div className="flex items-center gap-4">
-          <Link className="inline-flex cursor-pointer items-center justify-center border-2 border-black bg-white px-3 py-2 text-xs font-black uppercase text-black shadow-[3px_3px_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0_#151515]" to="/">← Voltar</Link>
+          <ButtonLink className="hover:shadow-[1px_1px_0_#151515]" size="small" variant="secondary" to="/" icon={<BackIcon />}>
+            Voltar
+          </ButtonLink>
           <PixelBrand light />
         </div>
         <div className="mx-auto mt-16 max-w-xl lg:mt-[clamp(72px,14vh,150px)]">

@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate } from 'react-router-dom'
-import { PixelBrand } from '../components/PixelIcons'
+import { ButtonLink } from '../components/Button'
+import { BackIcon, PixelBrand } from '../components/PixelIcons'
 import { AuthForm } from '../features/auth/AuthForm'
 import { authQueryKey, authQueryOptions } from '../features/auth/auth.queries'
 import type { AuthFormData } from '../features/auth/auth.schemas'
@@ -58,7 +59,9 @@ export function RegisterPage() {
 
       <section className="order-1 relative overflow-hidden bg-green-900 px-6 py-7 text-white sm:px-10 lg:py-10">
         <div className="flex items-center m-auto gap-4">
-          <Link className="inline-flex cursor-pointer items-center justify-center border-2 border-black bg-white px-3 py-2 text-xs font-black uppercase text-black shadow-[3px_3px_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0_#151515]" to="/">← Voltar</Link>
+          <ButtonLink className="hover:shadow-[1px_1px_0_#151515]" size="small" variant="secondary" to="/" icon={<BackIcon />}>
+            Voltar
+          </ButtonLink>
           <PixelBrand light />
         </div>
         <div className="mx-auto mt-14 flex max-w-xl flex-col items-end text-right lg:mt-[clamp(72px,14vh,150px)]">

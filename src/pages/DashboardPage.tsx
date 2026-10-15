@@ -2,16 +2,16 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { PixelBrand, DeleteIcon } from '../components/PixelIcons'
-import { Button } from '../components/Button'
+import { Button, ButtonLink } from '../components/Button'
 import { Form } from '../components/Form'
 import { authQueryKey, useAuth } from '../features/auth/auth.queries'
 import { DeleteGroupModal } from '../features/groups/DeleteGroupModal'
 import { groupsKey, groupsQueryOptions } from '../features/groups/group.queries'
 import { groupSchema, type GroupFormData } from '../features/groups/group.schemas'
 import { getErrorMessage } from '../lib/errors'
-import { formErrorMessage, openGroupButton, panelClass } from '../lib/styles'
+import { formErrorMessage, panelClass } from '../lib/styles'
 import { authService } from '../services/auth'
 import { groupsService, type Group, type GroupStatus } from '../services/groups'
 
@@ -97,7 +97,7 @@ export function DashboardPage() {
                   <h2 className="mt-5 break-words text-2xl font-black">{group.name}</h2>
                   <p className="mt-3 text-xs text-black/60">Criado em {formatDate(group.createdAt)}</p>
                   <div className="mt-5 flex flex-wrap justify-between gap-2">
-                    <Link className={`${openGroupButton} mt-6`} to={`/dashboard/groups/${group.id}`}>Abrir grupo</Link>
+                    <ButtonLink className="mt-6" to={`/dashboard/groups/${group.id}`}>Abrir grupo</ButtonLink>
 
                     {group.status === 'DRAFT' && (
                       <Button
