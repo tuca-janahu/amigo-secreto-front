@@ -1,9 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { PixelBrand, DeleteIcon } from '../components/PixelIcons'
+import { PixelBrand, DeleteIcon, PlusIcon, MinusIcon } from '../components/PixelIcons'
 import { Button, ButtonLink } from '../components/Button'
 import { Form } from '../components/Form'
 import { authQueryKey, useAuth } from '../features/auth/auth.queries'
@@ -31,9 +31,14 @@ export function DashboardPage() {
   const [isLeaving, setIsLeaving] = useState(false)
   const [showCreate, setShowCreate] = useState(false)
   const [groupToDelete, setGroupToDelete] = useState<Group | null>(null)
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<GroupFormData>({
+  const { register, handleSubmit, reset, setFocus, formState: { errors } } = useForm<GroupFormData>({
     resolver: zodResolver(groupSchema), defaultValues: { name: '' },
   })
+
+  useEffect(() => {
+    if (showCreate) setFocus('name')
+  }, [setFocus, showCreate])
+
   const createGroup = useMutation({
     mutationFn: ({ name }: GroupFormData) => groupsService.create(name),
     onSuccess: async (group) => {
@@ -70,20 +75,34 @@ export function DashboardPage() {
             <p className="inline-block border-2 border-black bg-amber-400 px-3 py-1 text-xs font-black uppercase tracking-wider shadow-[3px_3px_0_#151515]">Área do organizador</p>
             <h1 id="dashboard-title" className="mt-6 text-4xl leading-none font-black tracking-[-0.07em] sm:text-6xl">Olá, {user?.name?.trim() || 'Jogador'}</h1>
           </div>
-          <Button onClick={() => setShowCreate((value) => !value)}>{showCreate ? '− Fechar formulário' : '+ Novo grupo'}</Button>
+          <Button
+            aria-controls="create-group-form"
+            aria-expanded={showCreate}
+            icon={showCreate ? <MinusIcon /> : <PlusIcon />}
+            onClick={() => setShowCreate((value) => !value)}
+          >
+            {showCreate ? 'Fechar formulário' : 'Novo grupo'}
+          </Button>
         </div>
 
-        {showCreate && (
-          <Form className={`${panelClass} mt-8 grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end`} onSubmit={handleSubmit((data) => createGroup.mutate(data))}>
-            <div>
-              <Form.Label htmlFor="group-name">Nome do grupo</Form.Label>
-              <Form.Input id="group-name" className="mt-2" autoFocus {...register('name')} aria-invalid={Boolean(errors.name)} aria-describedby={errors.name ? 'group-name-error' : undefined} />
-              {errors.name && <p id="group-name-error" className={`${formErrorMessage} mt-2`} role="alert">{errors.name.message}</p>}
-            </div>
-            <Form.Button type="submit" disabled={createGroup.isPending}>{createGroup.isPending ? 'Criando...' : 'Criar grupo'}</Form.Button>
-            {createGroup.isError && <p className={`${formErrorMessage} text-sm sm:col-span-2`} role="alert">{getErrorMessage(createGroup.error, 'Não foi possível criar o grupo.')}</p>}
-          </Form>
-        )}
+        <div
+          id="create-group-form"
+          className={`grid transition-[grid-template-rows,opacity,margin-top] duration-300 ease-out motion-reduce:transition-none ${showCreate ? 'mt-8 grid-rows-[1fr] opacity-100' : 'mt-0 grid-rows-[0fr] opacity-0'}`}
+          aria-hidden={!showCreate}
+          inert={!showCreate}
+        >
+          <div className="min-h-0 overflow-hidden pr-1.5 pb-1.5">
+            <Form className={`${panelClass} grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end`} onSubmit={handleSubmit((data) => createGroup.mutate(data))}>
+              <div>
+                <Form.Label htmlFor="group-name">Nome do grupo</Form.Label>
+                <Form.Input id="group-name" className="mt-2" {...register('name')} aria-invalid={Boolean(errors.name)} aria-describedby={errors.name ? 'group-name-error' : undefined} />
+                {errors.name && <p id="group-name-error" className={`${formErrorMessage} mt-2`} role="alert">{errors.name.message}</p>}
+              </div>
+              <Form.Button type="submit" disabled={createGroup.isPending}>{createGroup.isPending ? 'Criando...' : 'Criar grupo'}</Form.Button>
+              {createGroup.isError && <p className={`${formErrorMessage} text-sm sm:col-span-2`} role="alert">{getErrorMessage(createGroup.error, 'Não foi possível criar o grupo.')}</p>}
+            </Form>
+          </div>
+        </div>
 
         <div className="mt-10">
           {groupsQuery.isPending && <p className={`${panelClass} font-black`}>Carregando grupos...</p>}

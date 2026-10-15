@@ -38,12 +38,22 @@ type ButtonVariant = keyof typeof variants
 type ButtonSize = keyof typeof sizes
 
 export type ButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'size'> & {
+  icon?: ReactNode
   size?: ButtonSize
   variant?: ButtonVariant
 }
 
-export function Button({ className = '', size = 'medium', variant = 'primary', type = 'button', ...props }: ButtonProps) {
-  return <button type={type} className={`${baseClassName} ${sizes[size]} ${variants[variant]} enabled:hover:translate-x-0.5 enabled:hover:translate-y-0.5 disabled:cursor-wait disabled:opacity-60 ${buttonHoverVariants[variant]} ${className}`} {...props} />
+function ButtonIcon({ children }: { children: ReactNode }) {
+  return <span className="size-5 shrink-0 [&>svg]:size-full" aria-hidden="true">{children}</span>
+}
+
+export function Button({ children, className = '', icon, size = 'medium', variant = 'primary', type = 'button', ...props }: ButtonProps) {
+  return (
+    <button type={type} className={`${baseClassName} ${sizes[size]} ${variants[variant]} ${icon ? 'gap-2' : ''} enabled:hover:translate-x-0.5 enabled:hover:translate-y-0.5 disabled:cursor-wait disabled:opacity-60 ${buttonHoverVariants[variant]} ${className}`} {...props}>
+      {icon && <ButtonIcon>{icon}</ButtonIcon>}
+      {children}
+    </button>
+  )
 }
 
 export type ButtonLinkProps = Omit<LinkProps, 'className'> & {
@@ -56,7 +66,7 @@ export type ButtonLinkProps = Omit<LinkProps, 'className'> & {
 export function ButtonLink({ children, className = '', size = 'medium', variant = 'primary', icon, ...props }: ButtonLinkProps) {
   return (
     <Link className={`${baseClassName} ${sizes[size]} ${variants[variant]} ${icon ? 'gap-2' : ''} hover:translate-x-0.5 hover:translate-y-0.5 ${linkHoverVariants[variant]} ${className}`} {...props}>
-      {icon && <span className="size-5 shrink-0 [&>svg]:size-full" aria-hidden="true">{icon}</span>}
+      {icon && <ButtonIcon>{icon}</ButtonIcon>}
       {children}
     </Link>
   )
