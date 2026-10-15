@@ -13,6 +13,22 @@ export const registrationSchema = credentialsSchema.extend({
 
 export type RegistrationFormData = z.infer<typeof registrationSchema>
 
+export const forgotPasswordSchema = z.object({
+  email: z.email('Informe um e-mail válido.'),
+})
+
+export type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>
+
+export const resetPasswordSchema = z.object({
+  password: z.string().min(8, 'A senha deve ter pelo menos 8 caracteres.'),
+  confirmPassword: z.string(),
+}).refine(({ password, confirmPassword }) => password === confirmPassword, {
+  path: ['confirmPassword'],
+  message: 'As senhas não coincidem.',
+})
+
+export type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>
+
 export const authFormSchema = credentialsSchema.extend({
   name: z.string().optional(),
   confirmPassword: z.string().optional(),
