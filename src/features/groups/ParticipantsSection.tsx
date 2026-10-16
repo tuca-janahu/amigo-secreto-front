@@ -4,8 +4,10 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Button } from '../../components/Button'
 import { Form } from '../../components/Form'
+import { useAuth } from '../auth/auth.queries'
 import { participantsKey, participantsQueryOptions, restrictionsKey, viabilityKey } from './group.queries'
 import { importSchema, participantSchema, type ImportFormData, type ParticipantFormData } from './group.schemas'
+import { hasParticipantEmail } from './participants.utils'
 import { getErrorMessage } from '../../lib/errors'
 import { formErrorMessage, inputClass, panelClass } from '../../lib/styles'
 import { participantsService, type Participant } from '../../services/participants'
@@ -32,6 +34,7 @@ function ParticipantForm({ participant, pending, onCancel, onSave }: {
 }
 export function ParticipantsSection({ groupId, editable }: Props) {
   const queryClient = useQueryClient()
+  const auth = useAuth()
   const participants = useQuery(participantsQueryOptions(groupId))
   const [editing, setEditing] = useState<Participant>()
   const [feedback, setFeedback] = useState<string>()
@@ -51,10 +54,35 @@ export function ParticipantsSection({ groupId, editable }: Props) {
     onSuccess: async ({ imported }) => { importForm.reset(); setFeedback(`${imported} participante${imported === 1 ? '' : 's'} importado${imported === 1 ? '' : 's'}.`); await refresh() },
   })
   const mutationError = create.error ?? update.error ?? remove.error
+  const currentUserIsParticipant = hasParticipantEmail(
+    participants.data,
+    auth.data?.email,
+  )
+  const isAddingCurrentUser =
+    create.isPending && create.variables.email === auth.data?.email
+
+  const addCurrentUser = () => {
+    if (!auth.data) return
+
+    setFeedback(undefined)
+    create.mutate({ name: auth.data.name, email: auth.data.email })
+  }
 
   return <section className={panelClass} aria-labelledby="participants-title">
     <div className="flex items-center justify-between gap-4"><div><p className="text-xs font-black uppercase tracking-wider text-red-600">Turma</p><h2 id="participants-title" className="mt-2 text-2xl font-black uppercase">Participantes</h2></div><span className="border-2 border-black bg-amber-400 px-2 py-1 text-xs font-black">{participants.data?.length ?? 0}</span></div>
-    {editable && <div className="mt-6 border-t-2 border-dashed border-black pt-5"><ParticipantForm key={`new-${participants.data?.length ?? 0}`} pending={create.isPending} onSave={(data) => { setFeedback(undefined); create.mutate(data) }} /></div>}
+    {editable && <div className="mt-6 border-t-2 border-dashed border-black pt-5">
+      <div className="flex flex-col items-start justify-between gap-4 border-2 border-black bg-amber-50 p-4 sm:flex-row sm:items-center">
+        <div><h3 className="font-black uppercase">Você vai participar?</h3><p className="mt-1 text-xs leading-5 text-black/60">Adicione seu nome e e-mail com um clique.</p></div>
+        <Button
+          variant="secondary"
+          disabled={auth.isPending || participants.isPending || create.isPending || currentUserIsParticipant || !auth.data}
+          onClick={addCurrentUser}
+        >
+          {currentUserIsParticipant ? 'Você já participa' : isAddingCurrentUser ? 'Adicionando...' : 'Adicionar-me ao sorteio'}
+        </Button>
+      </div>
+      <div className="mt-5 border-t-2 border-dashed border-black pt-5"><ParticipantForm key={`new-${participants.data?.length ?? 0}`} pending={create.isPending} onSave={(data) => { setFeedback(undefined); create.mutate(data) }} /></div>
+    </div>}
     {mutationError && <p className={`${formErrorMessage} mt-4 text-sm`} role="alert">{getErrorMessage(mutationError, 'Não foi possível alterar o participante.')}</p>}
     {feedback && <p className="mt-4 border-2 border-green-900 bg-green-100 p-3 text-sm font-bold" role="status">{feedback}</p>}
     <div className="mt-6 grid gap-3">
