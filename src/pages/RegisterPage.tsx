@@ -1,19 +1,22 @@
 import { useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { ButtonLink } from '../components/Button'
 import { BackIcon, PixelBrand } from '../components/PixelIcons'
 import { AuthForm } from '../features/auth/AuthForm'
 import { authQueryKey, authQueryOptions } from '../features/auth/auth.queries'
+import { getAuthReturnTo } from '../features/auth/navigation'
 import type { AuthFormData } from '../features/auth/auth.schemas'
 import { ApiError } from '../lib/http'
 import { authService } from '../services/auth'
 
 export function RegisterPage() {
   const navigate = useNavigate()
+  const location = useLocation()
   const queryClient = useQueryClient()
   const [error, setError] = useState<string>()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const returnTo = getAuthReturnTo(location.state)
 
   async function handleSubmit({ name, email, password }: AuthFormData) {
     setError(undefined)
@@ -26,10 +29,10 @@ export function RegisterPage() {
       try {
         await queryClient.invalidateQueries({ queryKey: authQueryKey })
         await queryClient.fetchQuery(authQueryOptions)
-        navigate('/dashboard', { replace: true })
+        navigate(returnTo, { replace: true })
       } catch (authError) {
         if (authError instanceof ApiError && authError.status === 401) {
-          navigate('/login', { replace: true })
+          navigate('/login', { replace: true, state: { returnTo } })
           return
         }
 
@@ -53,7 +56,7 @@ export function RegisterPage() {
           <h1 id="register-title" className="mt-3 text-3xl leading-none font-black tracking-[-0.06em] sm:text-4xl">Crie sua conta.</h1>
           <p className="mt-4 text-sm leading-6 text-black/70">Em poucos segundos você já pode preparar o próximo sorteio.</p>
           <div className="mt-6"><AuthForm includeName submitLabel="Criar conta" isSubmitting={isSubmitting} error={error} onSubmit={handleSubmit} /></div>
-          <p className="mt-7 text-center text-xs leading-6 text-black/70">Já tem uma conta? <Link className="font-black uppercase text-red-600 underline decoration-2 underline-offset-4" to="/login">Entrar</Link></p>
+          <p className="mt-7 text-center text-xs leading-6 text-black/70">Já tem uma conta? <Link className="font-black uppercase text-red-600 underline decoration-2 underline-offset-4" to="/login" state={{ returnTo }}>Entrar</Link></p>
         </div>
       </section>
 

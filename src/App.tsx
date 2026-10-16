@@ -7,6 +7,7 @@ import { ForgotPasswordPage } from './pages/ForgotPasswordPage'
 import { ResetPasswordPage } from './pages/ResetPasswordPage'
 import { GroupPage } from './pages/GroupPage'
 import { ParticipantPage } from './pages/ParticipantPage'
+import { AuthenticatedParticipantPage } from './pages/AuthenticatedParticipantPage'
 import { RegisterPage } from './pages/RegisterPage'
 import { FeedbackWidget } from './features/feedback/FeedbackWidget'
 
@@ -25,6 +26,7 @@ export function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/dashboard/groups/:groupId" element={<GroupPage />} />
+          <Route path="/dashboard/groups/:groupId/participation" element={<AuthenticatedParticipantPage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

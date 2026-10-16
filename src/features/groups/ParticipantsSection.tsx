@@ -5,7 +5,14 @@ import { useForm } from 'react-hook-form'
 import { Button } from '../../components/Button'
 import { Form } from '../../components/Form'
 import { useAuth } from '../auth/auth.queries'
-import { participantsKey, participantsQueryOptions, restrictionsKey, viabilityKey } from './group.queries'
+import {
+  groupKey,
+  groupsKey,
+  participantsKey,
+  participantsQueryOptions,
+  restrictionsKey,
+  viabilityKey,
+} from './group.queries'
 import { importSchema, participantSchema, type ImportFormData, type ParticipantFormData } from './group.schemas'
 import { hasParticipantEmail } from './participants.utils'
 import { getErrorMessage } from '../../lib/errors'
@@ -41,6 +48,8 @@ export function ParticipantsSection({ groupId, editable }: Props) {
   const importForm = useForm<ImportFormData>({ resolver: zodResolver(importSchema), defaultValues: { data: '' } })
   const refresh = async () => {
     await Promise.all([
+      queryClient.invalidateQueries({ queryKey: groupKey(groupId) }),
+      queryClient.invalidateQueries({ queryKey: groupsKey }),
       queryClient.invalidateQueries({ queryKey: participantsKey(groupId) }),
       queryClient.invalidateQueries({ queryKey: restrictionsKey(groupId) }),
       queryClient.invalidateQueries({ queryKey: viabilityKey(groupId) }),

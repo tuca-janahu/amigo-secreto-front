@@ -5,6 +5,7 @@ import { ButtonLink } from '../components/Button'
 import { BackIcon, CancelIcon, PixelBrand } from '../components/PixelIcons'
 import { AuthForm } from '../features/auth/AuthForm'
 import { authQueryKey, authQueryOptions } from '../features/auth/auth.queries'
+import { getAuthReturnTo, type AuthNavigationState } from '../features/auth/navigation'
 import type { AuthFormData } from '../features/auth/auth.schemas'
 import { ApiError } from '../lib/http'
 import { authService } from '../services/auth'
@@ -16,8 +17,9 @@ export function LoginPage() {
   const [error, setError] = useState<string>()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const passwordWasReset =
-    (location.state as { passwordReset?: boolean } | null)?.passwordReset ===
+    (location.state as AuthNavigationState | null)?.passwordReset ===
     true
+  const returnTo = getAuthReturnTo(location.state)
 
   async function handleSubmit({ email, password }: AuthFormData) {
     setError(undefined)
@@ -27,7 +29,7 @@ export function LoginPage() {
       await authService.login({ email, password })
       await queryClient.invalidateQueries({ queryKey: authQueryKey })
       await queryClient.fetchQuery(authQueryOptions)
-      navigate('/dashboard', { replace: true })
+      navigate(returnTo, { replace: true })
     } catch (submitError) {
       setError(
         submitError instanceof ApiError && submitError.status === 401
@@ -127,6 +129,7 @@ export function LoginPage() {
             <Link
               className="font-black uppercase text-red-600 underline decoration-2 underline-offset-4"
               to="/register"
+              state={{ returnTo }}
             >
               Criar conta
             </Link>

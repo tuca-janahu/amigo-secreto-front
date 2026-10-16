@@ -1,13 +1,20 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { PixelBrand, DeleteIcon, PlusIcon, MinusIcon } from '../components/PixelIcons'
+import {
+  PixelBrand,
+  DeleteIcon,
+  PlusIcon,
+  MinusIcon,
+  SettingsIcon,
+} from '../components/PixelIcons'
 import { Button, ButtonLink } from '../components/Button'
 import { Form } from '../components/Form'
 import { authQueryKey, useAuth } from '../features/auth/auth.queries'
 import { DeleteGroupModal } from '../features/groups/DeleteGroupModal'
+import { getGroupCardActions } from '../features/groups/group-access'
 import { groupsKey, groupsQueryOptions } from '../features/groups/group.queries'
 import { groupSchema, type GroupFormData } from '../features/groups/group.schemas'
 import { getErrorMessage } from '../lib/errors'
@@ -25,12 +32,12 @@ function formatDate(value: string) {
 
 export function DashboardPage() {
   const { data: user } = useAuth()
-  const groupsQuery = useQuery(groupsQueryOptions)
   const queryClient = useQueryClient()
   const navigate = useNavigate()
   const [isLeaving, setIsLeaving] = useState(false)
   const [showCreate, setShowCreate] = useState(false)
   const [groupToDelete, setGroupToDelete] = useState<Group | null>(null)
+  const syncStarted = useRef(false)
   const { register, handleSubmit, reset, setFocus, formState: { errors } } = useForm<GroupFormData>({
     resolver: zodResolver(groupSchema), defaultValues: { name: '' },
   })
@@ -47,6 +54,24 @@ export function DashboardPage() {
       navigate(`/dashboard/groups/${group.id}`)
     },
   })
+  const syncParticipations = useMutation({
+    mutationFn: groupsService.syncOwnerParticipations,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: groupsKey })
+    },
+  })
+  const groupsQuery = useQuery({
+    ...groupsQueryOptions,
+    enabled: syncParticipations.isSuccess || syncParticipations.isError,
+  })
+
+  useEffect(() => {
+    if (user && !syncStarted.current) {
+      syncStarted.current = true
+      syncParticipations.mutate()
+    }
+  }, [syncParticipations, user])
+
   const deleteGroup = useMutation({
     mutationFn: (groupId: string) => groupsService.remove(groupId),
     onSuccess: async () => {
@@ -72,7 +97,7 @@ export function DashboardPage() {
       <section className="mx-auto max-w-6xl py-12 sm:py-16" aria-labelledby="dashboard-title">
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <div>
-            <p className="inline-block border-2 border-black bg-amber-400 px-3 py-1 text-xs font-black uppercase tracking-wider shadow-[3px_3px_0_#151515]">Área do organizador</p>
+            <p className="inline-block border-2 border-black bg-amber-400 px-3 py-1 text-xs font-black uppercase tracking-wider shadow-[3px_3px_0_#151515]">Seus grupos e sorteios</p>
             <h1 id="dashboard-title" className="mt-6 text-4xl leading-none font-black tracking-[-0.07em] sm:text-6xl">Olá, {user?.name?.trim() || 'Jogador'}</h1>
           </div>
           <Button
@@ -105,24 +130,66 @@ export function DashboardPage() {
         </div>
 
         <div className="mt-10">
+          {syncParticipations.isError && (
+            <div className={`${panelClass} mb-5 bg-amber-50`} role="alert">
+              <p className="font-black">Não foi possível atualizar suas participações.</p>
+              <p className="mt-2 text-sm text-black/70">
+                Seus grupos continuam disponíveis, mas algum acesso ao sorteio pode não aparecer.
+              </p>
+              <Button
+                className="mt-4"
+                variant="secondary"
+                disabled={syncParticipations.isPending}
+                onClick={() => syncParticipations.mutate()}
+              >
+                Tentar novamente
+              </Button>
+            </div>
+          )}
           {groupsQuery.isPending && <p className={`${panelClass} font-black`}>Carregando grupos...</p>}
           {groupsQuery.isError && <div className={`${panelClass} bg-red-50`} role="alert"><p className="font-black text-red-700">Não foi possível carregar seus grupos.</p><Button className="mt-4" onClick={() => groupsQuery.refetch()}>Tentar novamente</Button></div>}
-          {groupsQuery.data?.length === 0 && <div className={panelClass}><h2 className="text-2xl font-black uppercase">Nenhum grupo ainda.</h2><p className="mt-3 text-sm text-black/70">Crie o primeiro grupo para adicionar a turma e preparar o sorteio.</p></div>}
+          {groupsQuery.data?.length === 0 && <div className={panelClass}><h2 className="text-2xl font-black uppercase">Nenhum grupo ainda.</h2><p className="mt-3 text-sm text-black/70">Crie um grupo ou abra o convite recebido por e-mail para vinculá-lo à sua conta.</p></div>}
           {groupsQuery.data && groupsQuery.data.length > 0 && (
             <section className="grid gap-5 md:grid-cols-2 lg:grid-cols-3" aria-label="Seus grupos">
-              {groupsQuery.data.map((group) => (
-                <article key={group.id} className={panelClass}>
-                  <span className={`inline-block border-2 border-black px-2 py-1 text-xs font-black uppercase ${group.status === 'SORTEADO' ? 'bg-green-900 text-white' : 'bg-amber-400'}`}>{statusLabel[group.status]}</span>
+              {groupsQuery.data.map((group) => {
+                const actions = getGroupCardActions(group)
+
+                return <article key={group.id} className={panelClass}>
+                  <div className="flex flex-wrap gap-2">
+                    <span className={`inline-block border-2 border-black px-2 py-1 text-xs font-black uppercase ${group.status === 'SORTEADO' ? 'bg-green-900 text-white' : 'bg-amber-400'}`}>{statusLabel[group.status]}</span>
+                    {actions.canManage && <span className="inline-block border-2 border-black bg-white px-2 py-1 text-xs font-black uppercase">Organizador</span>}
+                    {actions.canViewDraw && <span className="inline-block border-2 border-black bg-green-100 px-2 py-1 text-xs font-black uppercase">Participante</span>}
+                  </div>
                   <h2 className="mt-5 break-words text-2xl font-black">{group.name}</h2>
                   <p className="mt-3 text-xs text-black/60">Criado em {formatDate(group.createdAt)}</p>
-                  <div className="mt-5 flex flex-wrap justify-between gap-2">
-                    <ButtonLink className="mt-6" to={`/dashboard/groups/${group.id}`}>Abrir grupo</ButtonLink>
+                  <div className="mt-6 flex items-stretch gap-2">
+                    {actions.canViewDraw && (
+                      <ButtonLink
+                        className="min-w-0 flex-1"
+                        to={`/dashboard/groups/${group.id}/participation`}
+                      >
+                        Ver meu sorteio
+                      </ButtonLink>
+                    )}
 
-                    {group.status === 'DRAFT' && (
+                    {actions.canManage && (
+                      <ButtonLink
+                        className="aspect-square px-2.5"
+                        variant="secondary"
+                        to={`/dashboard/groups/${group.id}`}
+                        aria-label={`Gerenciar sorteio ${group.name}`}
+                        title="Gerenciar sorteio"
+                      >
+                        <SettingsIcon />
+                      </ButtonLink>
+                    )}
+
+                    {actions.canManage && group.status === 'DRAFT' && (
                       <Button
-                        className="mt-6"
+                        className="aspect-square px-2.5"
                         variant="danger"
                         aria-label={`Excluir grupo ${group.name}`}
+                        title="Excluir grupo"
                         onClick={() => {
                           deleteGroup.reset()
                           setGroupToDelete(group)
@@ -133,7 +200,7 @@ export function DashboardPage() {
                     )}
                   </div>
                 </article>
-              ))}
+              })}
             </section>
           )}
         </div>

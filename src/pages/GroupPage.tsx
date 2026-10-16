@@ -104,6 +104,10 @@ function GroupContent({ groupId }: { groupId: string }) {
       </main>
     )
 
+  if (!group.data.roles.includes('OWNER')) {
+    return <Navigate to={`/dashboard/groups/${groupId}/participation`} replace />
+  }
+
   const editable = group.data.status === 'DRAFT'
   return (
     <main className="min-h-screen bg-amber-100/50 px-5 py-6 font-mono text-black sm:px-8 lg:px-14">
