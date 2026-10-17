@@ -1,5 +1,7 @@
+import { Link } from 'react-router-dom'
 import { ButtonLink } from '../components/Button'
 import { PixelBrand } from '../components/PixelIcons'
+import presentePixelArt from '../assets/presente-pixel-art.svg?no-inline'
 
 export function HomePage() {
   return (
@@ -30,15 +32,28 @@ export function HomePage() {
           </div>
         </div>
 
-        <div className="relative mx-auto w-full max-w-md border-2 border-black bg-green-900 p-5 shadow-[8px_8px_0_#151515] sm:p-8" aria-hidden="true">
+        <div className="relative mx-auto w-full max-w-md border-2 border-black bg-green-900 p-5 shadow-[8px_8px_0_#151515] sm:p-8">
           <div className="absolute -left-3 -top-3 size-6 border-2 border-black bg-white" />
           <div className="absolute -bottom-4 -right-4 size-9 border-2 border-black bg-red-600" />
-          <div className="grid min-h-72 place-items-center border-2 border-dashed border-black bg-white p-6">
-            <div className="relative grid size-40 place-items-center border-2 border-black bg-red-600 shadow-[6px_6px_0_#151515]">
-              <span className="font-sans text-7xl font-black text-white">?</span>
-              <span className="absolute -left-8 top-4 grid size-12 place-items-center border-2 border-black bg-white text-xl">*</span>
-              <span className="absolute -right-7 bottom-3 grid size-11 place-items-center border-2 border-black bg-amber-400 text-xl text-white">!</span>
-            </div>
+          <div className="relative grid min-h-72 place-items-center border-2 border-dashed border-black bg-white p-6">
+            <span aria-hidden="true" className="home-gift-sparkle home-gift-sparkle--one" />
+            <span aria-hidden="true" className="home-gift-sparkle home-gift-sparkle--two" />
+            <span aria-hidden="true" className="home-gift-sparkle home-gift-sparkle--three" />
+            <span aria-hidden="true" className="home-gift-sparkle home-gift-sparkle--four" />
+            <Link aria-label="Entrar na sua conta" className="home-gift-link" to="/login">
+              <span className="home-gift-float block">
+                <img
+                  alt=""
+                  className="pointer-events-none block h-auto w-52 max-w-full select-none [image-rendering:pixelated]"
+                  decoding="async"
+                  draggable={false}
+                  fetchPriority="high"
+                  height="240"
+                  src={presentePixelArt}
+                  width="208"
+                />
+              </span>
+            </Link>
           </div>
           <p className="mt-5 text-center text-xs text-white font-black uppercase tracking-[0.18em]">Quem será que eu tirei hein..</p>
         </div>
