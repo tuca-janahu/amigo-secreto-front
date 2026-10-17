@@ -3,10 +3,14 @@ import { ProtectedRoute, PublicOnlyRoute } from './features/auth/RouteGuards'
 import { DashboardPage } from './pages/DashboardPage'
 import { HomePage } from './pages/HomePage'
 import { LoginPage } from './pages/LoginPage'
+import { ForgotPasswordPage } from './pages/ForgotPasswordPage'
+import { ResetPasswordPage } from './pages/ResetPasswordPage'
 import { GroupPage } from './pages/GroupPage'
 import { ParticipantPage } from './pages/ParticipantPage'
+import { AuthenticatedParticipantPage } from './pages/AuthenticatedParticipantPage'
 import { RegisterPage } from './pages/RegisterPage'
 import { FeedbackWidget } from './features/feedback/FeedbackWidget'
+import { AppToaster } from './components/Toast'
 
 export function App() {
   return (
@@ -17,13 +21,17 @@ export function App() {
         <Route element={<PublicOnlyRoute />}>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         </Route>
+        <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/dashboard/groups/:groupId" element={<GroupPage />} />
+          <Route path="/dashboard/groups/:groupId/participation" element={<AuthenticatedParticipantPage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+      <AppToaster />
       <FeedbackWidget />
     </>
   )

@@ -9,6 +9,11 @@ export type Registration = Credentials & {
   name: string
 }
 
+export type PasswordReset = {
+  token: string
+  password: string
+}
+
 export type AuthenticatedUser = {
   id: string
   name: string
@@ -27,6 +32,16 @@ export const authService = {
     http<AuthResponse>('/auth/login', {
       method: 'POST',
       body: credentials,
+    }),
+  forgotPassword: (email: string) =>
+    http<{ message: string }>('/auth/forgot-password', {
+      method: 'POST',
+      body: { email },
+    }),
+  resetPassword: (input: PasswordReset) =>
+    http<void>('/auth/reset-password', {
+      method: 'POST',
+      body: input,
     }),
   me: async () => (await http<AuthResponse>('/auth/me')).user,
   logout: () =>

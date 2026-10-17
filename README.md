@@ -40,6 +40,7 @@ pnpm build
 - `POST /auth/logout`
 - `POST /feedback`
 - `GET|POST /groups`
+- `POST /groups/sync-owner-participations`
 - `GET|PATCH|DELETE /groups/:groupId`
 - `GET|POST|PATCH|DELETE /groups/:groupId/participants`
 - `POST /groups/:groupId/participants/import`

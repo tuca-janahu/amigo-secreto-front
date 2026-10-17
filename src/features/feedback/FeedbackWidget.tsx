@@ -4,8 +4,8 @@ import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent }
 import { useForm, useWatch } from 'react-hook-form'
 import { useLocation } from 'react-router-dom'
 import { Button } from '../../components/Button'
-import { FeedbackIcon } from '../../components/PixelIcons'
-import { getErrorMessage } from '../../lib/errors'
+import { appToast } from '../../lib/toast'
+import { CancelIcon, FeedbackIcon } from '../../components/PixelIcons'
 import { formErrorMessage } from '../../lib/styles'
 import { feedbackService } from '../../services/feedback'
 import {
@@ -62,6 +62,7 @@ export function FeedbackWidget() {
         source: getFeedbackSource(location.pathname),
       }),
     onSuccess: () => setSent(true),
+    onError: () => appToast.error('Não foi possível enviar o feedback.', { id: 'feedback-create' }),
   })
 
   function closeModal() {
@@ -158,7 +159,8 @@ export function FeedbackWidget() {
                     <h2 id="feedback-dialog-title" className="text-2xl font-black uppercase">{content.title}</h2>
                     <p id="feedback-dialog-description" className="mt-2 text-sm leading-6 text-black/70">A mensagem é anônima e será enviada diretamente para nossa equipe.</p>
                   </div>
-                  <button type="button" className="grid size-9 shrink-0 cursor-pointer place-items-center border-2 border-black bg-white text-xl font-black leading-none hover:bg-amber-100 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-black" aria-label="Fechar" disabled={submitFeedback.isPending} onClick={closeModal}>×</button>
+                  <Button variant="exit" icon={<CancelIcon />} disabled={submitFeedback.isPending} onClick={closeModal} aria-label="Fechar">
+                  </Button>
                 </div>
 
                 <form className="mt-6" noValidate onSubmit={handleSubmit((data) => submitFeedback.mutate(data))}>
@@ -194,8 +196,6 @@ export function FeedbackWidget() {
                     }}
                   />
                   {errors.message && <p id="feedback-message-error" className={`${formErrorMessage} mt-2 text-sm`} role="alert">{errors.message.message}</p>}
-                  {submitFeedback.isError && <p className={`${formErrorMessage} mt-3 text-sm`} role="alert">{getErrorMessage(submitFeedback.error, 'Não foi possível enviar o feedback.')}</p>}
-
                   <div className="mt-6 flex flex-wrap justify-end gap-3">
                     <Button variant="secondary" disabled={submitFeedback.isPending} onClick={closeModal}>Cancelar</Button>
                     <Button type="submit" disabled={submitFeedback.isPending}>{submitFeedback.isPending ? 'Enviando...' : 'Enviar feedback'}</Button>

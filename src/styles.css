@@ -1,5 +1,142 @@
 @import "tailwindcss";
 
+.app-toast {
+  --toast-accent: #1f2937;
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  width: min(24rem, calc(100vw - 2rem));
+  min-height: 5rem;
+  border: 2px solid #151515;
+  border-left: 0.65rem solid var(--toast-accent);
+  background: #fffbeb;
+  padding: 0.85rem 2.5rem 0.85rem 0.85rem;
+  color: #151515;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  box-shadow: 5px 5px 0 #151515;
+}
+
+.app-toast--success { --toast-accent: #14532d; }
+.app-toast--error { --toast-accent: #dc2626; }
+.app-toast--info { --toast-accent: #334155; }
+.app-toast--warning { --toast-accent: #f59e0b; }
+
+.app-toast__icon-slot {
+  align-self: stretch;
+  display: grid;
+  place-items: center;
+  border-right: 2px dashed #151515;
+  padding-right: 0.75rem;
+}
+
+.app-toast__icon {
+  display: grid;
+  width: 1.8rem;
+  height: 1.8rem;
+  place-items: center;
+  border: 2px solid #151515;
+  background: var(--toast-accent);
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 900;
+  line-height: 1;
+  box-shadow: 2px 2px 0 #151515;
+}
+
+.app-toast__content { min-width: 0; }
+
+.app-toast__title {
+  font-size: 0.8rem;
+  font-weight: 900;
+  line-height: 1.25rem;
+  letter-spacing: 0.01em;
+}
+
+.app-toast__description {
+  margin-top: 0.2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.15rem;
+  color: rgb(0 0 0 / 65%);
+}
+
+.app-toast__action {
+  cursor: pointer;
+  border: 2px solid #151515;
+  background: #14532d;
+  padding: 0.5rem 0.65rem;
+  color: white;
+  font-family: inherit;
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: 3px 3px 0 #151515;
+}
+
+.app-toast__action:hover {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 #151515;
+}
+
+.app-toast__action:focus-visible,
+.app-toast__close:focus-visible {
+  outline: 3px solid #151515;
+  outline-offset: 2px;
+}
+
+.app-toast__close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: grid;
+  width: 1.5rem;
+  height: 1.5rem;
+  cursor: pointer;
+  place-items: center;
+  border: 2px solid #151515;
+  background: white;
+  color: #151515;
+  box-shadow: 2px 2px 0 #151515;
+}
+
+.app-toast__close:hover {
+  transform: translate(1px, 1px);
+  background: #fde68a;
+  box-shadow: none;
+}
+
+[data-sonner-toaster] {
+  z-index: 70 !important;
+}
+
+@media (max-width: 639px) {
+  [data-sonner-toaster] {
+    right: 1rem !important;
+    left: 1rem !important;
+    width: auto !important;
+  }
+
+  .app-toast {
+    width: 100%;
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .app-toast__action {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-toast,
+  .app-toast__action {
+    transition: none !important;
+  }
+}
+
 .password-mask-input::selection {
   color: transparent;
   -webkit-text-fill-color: transparent;
