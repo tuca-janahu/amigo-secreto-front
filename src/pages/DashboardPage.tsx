@@ -8,6 +8,7 @@ import {
   DeleteIcon,
   PlusIcon,
   MinusIcon,
+  ExitIcon,
   SettingsIcon,
 } from '../components/PixelIcons'
 import { Button, ButtonLink } from '../components/Button'
@@ -92,7 +93,7 @@ export function DashboardPage() {
     <main className="min-h-screen bg-amber-100/50 px-5 py-6 font-mono text-black sm:px-8 lg:px-14">
       <header className="mx-auto flex max-w-6xl items-center justify-between gap-4">
         <PixelBrand />
-        <Button variant="exit" onClick={handleLogout} disabled={isLeaving}>{isLeaving ? 'Saindo...' : 'Sair'}</Button>
+        <Button variant="exit" icon={<ExitIcon />} onClick={handleLogout} disabled={isLeaving}>{isLeaving ? 'Saindo...' : 'Sair'}</Button>
       </header>
       <section className="mx-auto max-w-6xl py-12 sm:py-16" aria-labelledby="dashboard-title">
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
@@ -165,16 +166,16 @@ export function DashboardPage() {
                   <div className="mt-6 flex items-stretch gap-2">
                     {actions.canViewDraw && (
                       <ButtonLink
-                        className="min-w-0 flex-1"
+                        className="h-14 min-w-0 flex-1"
                         to={`/dashboard/groups/${group.id}/participation`}
                       >
                         Ver meu sorteio
                       </ButtonLink>
                     )}
 
-                    {actions.canManage && (
+                    {actions.manageIconOnly && (
                       <ButtonLink
-                        className="aspect-square px-2.5"
+                        className="h-14 w-14 shrink-0 px-0 py-0"
                         variant="secondary"
                         to={`/dashboard/groups/${group.id}`}
                         aria-label={`Gerenciar sorteio ${group.name}`}
@@ -184,9 +185,20 @@ export function DashboardPage() {
                       </ButtonLink>
                     )}
 
+                    {actions.canManage && !actions.manageIconOnly && (
+                      <ButtonLink
+                        className="h-14 min-w-0 flex-1"
+                        variant="secondary"
+                        to={`/dashboard/groups/${group.id}`}
+                        icon={<SettingsIcon />}
+                      >
+                        Gerenciar grupo
+                      </ButtonLink>
+                    )}
+
                     {actions.canManage && group.status === 'DRAFT' && (
                       <Button
-                        className="aspect-square px-2.5"
+                        className="h-14 w-14 shrink-0 px-0 py-0"
                         variant="danger"
                         aria-label={`Excluir grupo ${group.name}`}
                         title="Excluir grupo"

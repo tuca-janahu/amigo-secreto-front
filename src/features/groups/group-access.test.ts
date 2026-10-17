@@ -10,12 +10,12 @@ describe('group card actions', () => {
         roles: ['OWNER', 'PARTICIPANT'] as GroupRole[],
         participant: { id: 'participant-1', name: 'Owner', revealed: false },
       },
-      expected: { canManage: true, canViewDraw: true },
+      expected: { canManage: true, canViewDraw: true, manageIconOnly: true },
     },
     {
       label: 'an owner who does not participate',
       group: { roles: ['OWNER'] as GroupRole[], participant: null },
-      expected: { canManage: true, canViewDraw: false },
+      expected: { canManage: true, canViewDraw: false, manageIconOnly: false },
     },
     {
       label: 'a participant who is not the owner',
@@ -23,7 +23,7 @@ describe('group card actions', () => {
         roles: ['PARTICIPANT'] as GroupRole[],
         participant: { id: 'participant-2', name: 'Guest', revealed: false },
       },
-      expected: { canManage: false, canViewDraw: true },
+      expected: { canManage: false, canViewDraw: true, manageIconOnly: false },
     },
   ])('returns the correct actions for $label', ({ group, expected }) => {
     expect(getGroupCardActions(group)).toEqual(expected)
