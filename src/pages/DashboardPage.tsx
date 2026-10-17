@@ -12,13 +12,13 @@ import {
   SettingsIcon,
 } from '../components/PixelIcons'
 import { Button, ButtonLink } from '../components/Button'
+import { appToast } from '../lib/toast'
 import { Form } from '../components/Form'
 import { authQueryKey, useAuth } from '../features/auth/auth.queries'
 import { DeleteGroupModal } from '../features/groups/DeleteGroupModal'
 import { getGroupCardActions } from '../features/groups/group-access'
 import { groupsKey, groupsQueryOptions } from '../features/groups/group.queries'
 import { groupSchema, type GroupFormData } from '../features/groups/group.schemas'
-import { getErrorMessage } from '../lib/errors'
 import { formErrorMessage, panelClass } from '../lib/styles'
 import { authService } from '../services/auth'
 import { groupsService, type Group, type GroupStatus } from '../services/groups'
@@ -54,6 +54,11 @@ export function DashboardPage() {
       reset()
       navigate(`/dashboard/groups/${group.id}`)
     },
+    onError: () => {
+      appToast.error('Não foi possível criar o grupo.', {
+        id: 'create-group-error',
+      })
+    },
   })
   const syncParticipations = useMutation({
     mutationFn: groupsService.syncOwnerParticipations,
@@ -79,11 +84,23 @@ export function DashboardPage() {
       await queryClient.invalidateQueries({ queryKey: groupsKey })
       setGroupToDelete(null)
     },
+    onError: () => {
+      appToast.error('Não foi possível excluir o grupo.', {
+        id: 'delete-group-error',
+      })
+    },
   })
 
   async function handleLogout() {
     setIsLeaving(true)
-    try { await authService.logout() } finally {
+    try {
+      await authService.logout()
+    } catch {
+      appToast.error('Não foi possível encerrar a sessão no servidor.', {
+        description: 'Você saiu deste dispositivo mesmo assim.',
+        id: 'logout-error',
+      })
+    } finally {
       queryClient.removeQueries({ queryKey: authQueryKey })
       navigate('/', { replace: true })
     }
@@ -125,7 +142,6 @@ export function DashboardPage() {
                 {errors.name && <p id="group-name-error" className={`${formErrorMessage} mt-2`} role="alert">{errors.name.message}</p>}
               </div>
               <Form.Button type="submit" disabled={createGroup.isPending}>{createGroup.isPending ? 'Criando...' : 'Criar grupo'}</Form.Button>
-              {createGroup.isError && <p className={`${formErrorMessage} text-sm sm:col-span-2`} role="alert">{getErrorMessage(createGroup.error, 'Não foi possível criar o grupo.')}</p>}
             </Form>
           </div>
         </div>
@@ -221,7 +237,6 @@ export function DashboardPage() {
         groupName={groupToDelete?.name ?? ''}
         isOpen={groupToDelete !== null}
         isDeleting={deleteGroup.isPending}
-        error={deleteGroup.isError ? deleteGroup.error : undefined}
         onCancel={() => setGroupToDelete(null)}
         onConfirm={() => {
           if (groupToDelete) deleteGroup.mutate(groupToDelete.id)

@@ -8,12 +8,11 @@ import { authFormSchema } from './auth.schemas'
 type AuthFormProps = {
   submitLabel: string
   isSubmitting: boolean
-  error?: string
   includeName?: boolean
   onSubmit: (data: AuthFormData) => Promise<void>
 }
 
-export function AuthForm({ submitLabel, isSubmitting, error, includeName = false, onSubmit }: AuthFormProps) {
+export function AuthForm({ submitLabel, isSubmitting, includeName = false, onSubmit }: AuthFormProps) {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmation, setShowConfirmation] = useState(false)
   const {
@@ -56,8 +55,6 @@ export function AuthForm({ submitLabel, isSubmitting, error, includeName = false
         </div>
         {errors.confirmPassword && <p id="confirm-password-error" className="border border-red-300 bg-red-50 px-3 py-2 text-xs font-bold text-red-700" role="alert">{errors.confirmPassword.message}</p>}
       </>}
-
-      {error && <p className="mt-2 border border-red-300 bg-red-50 p-3 text-xs font-bold leading-5 text-red-700" role="alert">{error}</p>}
 
       <Form.Button className="mt-5 py-3 text-sm" type="submit" disabled={isSubmitting}>
         {isSubmitting ? 'Aguarde...' : submitLabel}

@@ -6,14 +6,14 @@ import { ButtonLink } from '../components/Button'
 import { Form } from '../components/Form'
 import { BackIcon, PixelBrand } from '../components/PixelIcons'
 import { resetPasswordSchema, type ResetPasswordFormData } from '../features/auth/auth.schemas'
-import { ApiError } from '../lib/http'
+import { getErrorMessage } from '../lib/errors'
 import { authService } from '../services/auth'
+import { appToast } from '../lib/toast'
 
 export function ResetPasswordPage() {
   const { token } = useParams()
   const navigate = useNavigate()
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [error, setError] = useState<string>()
   const { register, handleSubmit, formState: { errors } } = useForm<ResetPasswordFormData>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: { password: '', confirmPassword: '' },
@@ -21,11 +21,12 @@ export function ResetPasswordPage() {
 
   async function onSubmit({ password }: ResetPasswordFormData) {
     if (!token) {
-      setError('Link de redefinição inválido ou expirado.')
+      appToast.error('Link de redefinição inválido ou expirado.', {
+        id: 'reset-password-error',
+      })
       return
     }
 
-    setError(undefined)
     setIsSubmitting(true)
 
     try {
@@ -35,11 +36,11 @@ export function ResetPasswordPage() {
         state: { passwordReset: true },
       })
     } catch (submitError) {
-      setError(
-        submitError instanceof ApiError && submitError.status === 400
-          ? 'Link de redefinição inválido ou expirado.'
-          : 'Não foi possível redefinir a senha. Tente novamente.',
-      )
+      appToast.error(getErrorMessage(
+        submitError,
+        'Não foi possível redefinir a senha. Tente novamente.',
+        { 400: 'Link de redefinição inválido ou expirado.' },
+      ), { id: 'reset-password-error' })
     } finally {
       setIsSubmitting(false)
     }
@@ -62,7 +63,6 @@ export function ResetPasswordPage() {
           <Form.Label className="mt-3" htmlFor="confirm-password">Confirmar nova senha</Form.Label>
           <Form.Input id="confirm-password" className="py-3 placeholder:text-black/50" type="password" autoComplete="new-password" aria-invalid={Boolean(errors.confirmPassword)} aria-describedby={errors.confirmPassword ? 'confirm-password-error' : undefined} {...register('confirmPassword')} />
           {errors.confirmPassword && <p id="confirm-password-error" className="border border-red-300 bg-red-50 px-3 py-2 text-xs font-bold text-red-700" role="alert">{errors.confirmPassword.message}</p>}
-          {error && <p className="mt-2 border border-red-300 bg-red-50 p-3 text-xs font-bold leading-5 text-red-700" role="alert">{error}</p>}
           <Form.Button className="mt-5 py-3 text-sm" type="submit" disabled={isSubmitting}>{isSubmitting ? 'Aguarde...' : 'Redefinir senha'}</Form.Button>
         </Form>
       </div>

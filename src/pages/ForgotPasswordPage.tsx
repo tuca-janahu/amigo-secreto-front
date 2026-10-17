@@ -7,25 +7,26 @@ import { Form } from '../components/Form'
 import { BackIcon, PixelBrand } from '../components/PixelIcons'
 import { forgotPasswordSchema, type ForgotPasswordFormData } from '../features/auth/auth.schemas'
 import { authService } from '../services/auth'
+import { appToast } from '../lib/toast'
 
 export function ForgotPasswordPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
-  const [error, setError] = useState<string>()
   const { register, handleSubmit, formState: { errors } } = useForm<ForgotPasswordFormData>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: { email: '' },
   })
 
   async function onSubmit({ email }: ForgotPasswordFormData) {
-    setError(undefined)
     setIsSubmitting(true)
 
     try {
       await authService.forgotPassword(email)
       setSubmitted(true)
     } catch {
-      setError('Não foi possível concluir a solicitação. Tente novamente.')
+      appToast.error('Não foi possível concluir a solicitação. Tente novamente.', {
+        id: 'forgot-password-error',
+      })
     } finally {
       setIsSubmitting(false)
     }
@@ -51,7 +52,6 @@ export function ForgotPasswordPage() {
               <Form.Label htmlFor="email">E-mail</Form.Label>
               <Form.Input id="email" className="py-3 placeholder:text-black/50" type="email" autoComplete="email" aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? 'email-error' : undefined} {...register('email')} />
               {errors.email && <p id="email-error" className="border border-red-300 bg-red-50 px-3 py-2 text-xs font-bold text-red-700" role="alert">{errors.email.message}</p>}
-              {error && <p className="mt-2 border border-red-300 bg-red-50 p-3 text-xs font-bold leading-5 text-red-700" role="alert">{error}</p>}
               <Form.Button className="mt-5 py-3 text-sm" type="submit" disabled={isSubmitting}>{isSubmitting ? 'Aguarde...' : 'Enviar link'}</Form.Button>
             </Form>
           </>

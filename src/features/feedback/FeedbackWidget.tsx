@@ -4,8 +4,8 @@ import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent }
 import { useForm, useWatch } from 'react-hook-form'
 import { useLocation } from 'react-router-dom'
 import { Button } from '../../components/Button'
+import { appToast } from '../../lib/toast'
 import { FeedbackIcon } from '../../components/PixelIcons'
-import { getErrorMessage } from '../../lib/errors'
 import { formErrorMessage } from '../../lib/styles'
 import { feedbackService } from '../../services/feedback'
 import {
@@ -62,6 +62,7 @@ export function FeedbackWidget() {
         source: getFeedbackSource(location.pathname),
       }),
     onSuccess: () => setSent(true),
+    onError: () => appToast.error('Não foi possível enviar o feedback.', { id: 'feedback-create' }),
   })
 
   function closeModal() {
@@ -194,8 +195,6 @@ export function FeedbackWidget() {
                     }}
                   />
                   {errors.message && <p id="feedback-message-error" className={`${formErrorMessage} mt-2 text-sm`} role="alert">{errors.message.message}</p>}
-                  {submitFeedback.isError && <p className={`${formErrorMessage} mt-3 text-sm`} role="alert">{getErrorMessage(submitFeedback.error, 'Não foi possível enviar o feedback.')}</p>}
-
                   <div className="mt-6 flex flex-wrap justify-end gap-3">
                     <Button variant="secondary" disabled={submitFeedback.isPending} onClick={closeModal}>Cancelar</Button>
                     <Button type="submit" disabled={submitFeedback.isPending}>{submitFeedback.isPending ? 'Enviando...' : 'Enviar feedback'}</Button>

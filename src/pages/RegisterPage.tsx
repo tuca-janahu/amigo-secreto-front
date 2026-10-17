@@ -7,19 +7,19 @@ import { AuthForm } from '../features/auth/AuthForm'
 import { authQueryKey, authQueryOptions } from '../features/auth/auth.queries'
 import { getAuthReturnTo } from '../features/auth/navigation'
 import type { AuthFormData } from '../features/auth/auth.schemas'
+import { getErrorMessage } from '../lib/errors'
 import { ApiError } from '../lib/http'
 import { authService } from '../services/auth'
+import { appToast } from '../lib/toast'
 
 export function RegisterPage() {
   const navigate = useNavigate()
   const location = useLocation()
   const queryClient = useQueryClient()
-  const [error, setError] = useState<string>()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const returnTo = getAuthReturnTo(location.state)
 
   async function handleSubmit({ name, email, password }: AuthFormData) {
-    setError(undefined)
     setIsSubmitting(true)
 
     try {
@@ -36,14 +36,17 @@ export function RegisterPage() {
           return
         }
 
-        setError('Conta criada, mas não foi possível confirmar sua sessão. Tente entrar.')
+        appToast.error(
+          'Conta criada, mas não foi possível confirmar sua sessão. Tente entrar.',
+          { id: 'register-session-error' },
+        )
       }
     } catch (submitError) {
-      setError(
-        submitError instanceof ApiError && submitError.status === 409
-          ? 'Este e-mail já está cadastrado.'
-          : 'Não foi possível criar sua conta. Tente novamente.',
-      )
+      appToast.error(getErrorMessage(
+        submitError,
+        'Não foi possível criar sua conta. Tente novamente.',
+        { 409: 'Este e-mail já está cadastrado.' },
+      ), { id: 'register-error' })
     } finally {
       setIsSubmitting(false)
     }
@@ -55,7 +58,7 @@ export function RegisterPage() {
         <div className="w-full max-w-md border-2 border-black bg-white p-6 shadow-[7px_7px_0_#151515] sm:p-10" aria-labelledby="register-title">
           <h1 id="register-title" className="mt-3 text-3xl leading-none font-black tracking-[-0.06em] sm:text-4xl">Crie sua conta.</h1>
           <p className="mt-4 text-sm leading-6 text-black/70">Em poucos segundos você já pode preparar o próximo sorteio.</p>
-          <div className="mt-6"><AuthForm includeName submitLabel="Criar conta" isSubmitting={isSubmitting} error={error} onSubmit={handleSubmit} /></div>
+          <div className="mt-6"><AuthForm includeName submitLabel="Criar conta" isSubmitting={isSubmitting} onSubmit={handleSubmit} /></div>
           <p className="mt-7 text-center text-xs leading-6 text-black/70">Já tem uma conta? <Link className="font-black uppercase text-red-600 underline decoration-2 underline-offset-4" to="/login" state={{ returnTo }}>Entrar</Link></p>
         </div>
       </section>

@@ -7,14 +7,14 @@ import { AuthForm } from '../features/auth/AuthForm'
 import { authQueryKey, authQueryOptions } from '../features/auth/auth.queries'
 import { getAuthReturnTo, type AuthNavigationState } from '../features/auth/navigation'
 import type { AuthFormData } from '../features/auth/auth.schemas'
-import { ApiError } from '../lib/http'
+import { getErrorMessage } from '../lib/errors'
 import { authService } from '../services/auth'
+import { appToast } from '../lib/toast'
 
 export function LoginPage() {
   const navigate = useNavigate()
   const location = useLocation()
   const queryClient = useQueryClient()
-  const [error, setError] = useState<string>()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const passwordWasReset =
     (location.state as AuthNavigationState | null)?.passwordReset ===
@@ -22,7 +22,6 @@ export function LoginPage() {
   const returnTo = getAuthReturnTo(location.state)
 
   async function handleSubmit({ email, password }: AuthFormData) {
-    setError(undefined)
     setIsSubmitting(true)
 
     try {
@@ -31,11 +30,11 @@ export function LoginPage() {
       await queryClient.fetchQuery(authQueryOptions)
       navigate(returnTo, { replace: true })
     } catch (submitError) {
-      setError(
-        submitError instanceof ApiError && submitError.status === 401
-          ? 'E-mail ou senha inválidos.'
-          : 'Não foi possível entrar. Tente novamente.',
-      )
+      appToast.error(getErrorMessage(
+        submitError,
+        'Não foi possível entrar. Tente novamente.',
+        { 401: 'E-mail ou senha inválidos.' },
+      ), { id: 'login-error' })
     } finally {
       setIsSubmitting(false)
     }
@@ -112,7 +111,6 @@ export function LoginPage() {
             <AuthForm
               submitLabel="Entrar"
               isSubmitting={isSubmitting}
-              error={error}
               onSubmit={handleSubmit}
             />
           </div>

@@ -10,6 +10,7 @@ import { ParticipantPage } from './pages/ParticipantPage'
 import { AuthenticatedParticipantPage } from './pages/AuthenticatedParticipantPage'
 import { RegisterPage } from './pages/RegisterPage'
 import { FeedbackWidget } from './features/feedback/FeedbackWidget'
+import { AppToaster } from './components/Toast'
 
 export function App() {
   return (
@@ -30,6 +31,7 @@ export function App() {
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+      <AppToaster />
       <FeedbackWidget />
     </>
   )

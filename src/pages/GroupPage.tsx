@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import { Button, ButtonLink } from '../components/Button'
+import { appToast } from '../lib/toast'
 import { Form } from '../components/Form'
 import { DrawSection } from '../features/groups/DrawSection'
 import { DeleteGroupModal } from '../features/groups/DeleteGroupModal'
@@ -19,7 +20,6 @@ import {
   groupSchema,
   type GroupFormData,
 } from '../features/groups/group.schemas'
-import { getErrorMessage } from '../lib/errors'
 import { formErrorMessage } from '../lib/styles'
 import { groupsService } from '../services/groups'
 import {
@@ -65,6 +65,11 @@ function GroupContent({ groupId }: { groupId: string }) {
         queryClient.invalidateQueries({ queryKey: groupsKey }),
       ])
     },
+    onError: () => {
+      appToast.error('Não foi possível renomear o grupo.', {
+        id: 'rename-group-error',
+      })
+    },
   })
   const remove = useMutation({
     mutationFn: () => groupsService.remove(groupId),
@@ -72,6 +77,11 @@ function GroupContent({ groupId }: { groupId: string }) {
       queryClient.removeQueries({ queryKey: groupKey(groupId) })
       await queryClient.invalidateQueries({ queryKey: groupsKey })
       navigate('/dashboard', { replace: true })
+    },
+    onError: () => {
+      appToast.error('Não foi possível excluir o grupo.', {
+        id: 'delete-group-error',
+      })
     },
   })
 
@@ -192,14 +202,6 @@ function GroupContent({ groupId }: { groupId: string }) {
               )}
             </div>
           )}
-          {rename.isError && (
-            <p className={`${formErrorMessage} mt-4 text-sm`} role="alert">
-              {getErrorMessage(
-                rename.error,
-                'Não foi possível renomear o grupo.',
-              )}
-            </p>
-          )}
           {!editable && (
             <p className="mt-5 max-w-2xl text-sm leading-6 text-white/80">
               O sorteio foi realizado. Participantes e restrições estão
@@ -213,7 +215,10 @@ function GroupContent({ groupId }: { groupId: string }) {
         </div>
         <div className="mt-8">
           {editable ? (
-            <DrawSection groupId={groupId} />
+            <DrawSection
+              groupId={groupId}
+              canViewDraw={Boolean(group.data.participant)}
+            />
           ) : group.data.status === 'SORTEADO' ? (
             <InvitationsSection groupId={groupId} />
           ) : null}
@@ -251,7 +256,6 @@ function GroupContent({ groupId }: { groupId: string }) {
         groupName={group.data.name}
         isOpen={confirmingDelete}
         isDeleting={remove.isPending}
-        error={remove.isError ? remove.error : undefined}
         onCancel={() => setConfirmingDelete(false)}
         onConfirm={() => remove.mutate()}
       />

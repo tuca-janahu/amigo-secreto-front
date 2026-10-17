@@ -1,13 +1,10 @@
 import { Button } from '../../components/Button'
 import { CancelIcon, DeleteIcon } from '../../components/PixelIcons'
-import { getErrorMessage } from '../../lib/errors'
-import { formErrorMessage } from '../../lib/styles'
 
 type DeleteGroupModalProps = {
   groupName: string
   isOpen: boolean
   isDeleting?: boolean
-  error?: unknown
   onCancel: () => void
   onConfirm: () => void
 }
@@ -16,7 +13,6 @@ export function DeleteGroupModal({
   groupName,
   isOpen,
   isDeleting = false,
-  error,
   onCancel,
   onConfirm,
 }: DeleteGroupModalProps) {
@@ -37,12 +33,6 @@ export function DeleteGroupModal({
         <p id="delete-group-dialog-description" className="mt-4 text-sm leading-6">
           O grupo <strong>{groupName}</strong>, seus participantes e suas restrições serão excluídos permanentemente.
         </p>
-
-        {error !== undefined && error !== null && (
-          <p className={`${formErrorMessage} mt-4 text-sm`} role="alert">
-            {getErrorMessage(error, 'Não foi possível excluir o grupo.')}
-          </p>
-        )}
 
         <div className="mt-6 flex flex-wrap gap-3">
           <Button className="gap-2" variant="secondary" disabled={isDeleting} onClick={onCancel}>

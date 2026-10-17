@@ -3,9 +3,9 @@ import { useMutation, useQuery, useQueryClient, type QueryKey } from '@tanstack/
 import { useState, type ReactNode } from 'react'
 import { useForm } from 'react-hook-form'
 import { Button } from '../../components/Button'
+import { appToast } from '../../lib/toast'
 import { PixelBrand } from '../../components/PixelIcons'
 import { Form } from '../../components/Form'
-import { getErrorMessage } from '../../lib/errors'
 import { formErrorMessage, inputClass, panelClass } from '../../lib/styles'
 import type { AnonymousMessage } from '../../services/messages'
 import type { RevealResult } from '../../services/participant-access'
@@ -57,13 +57,16 @@ export function ParticipantExperience({
       setHidden(false)
       onRevealed?.()
     },
+    onError: () => appToast.error('Não foi possível revelar. Tente novamente.', { id: 'reveal-error' }),
   })
   const createMessageMutation = useMutation({
     mutationFn: ({ content }: MessageFormData) => createMessage(content),
     onSuccess: async () => {
       messageForm.reset()
+      appToast.success('Mensagem publicada.', { id: 'message-create' })
       await queryClient.invalidateQueries({ queryKey: messagesKey })
     },
+    onError: () => appToast.error('Não foi possível publicar a mensagem.', { id: 'message-create' }),
   })
 
   const showResult = Boolean(result) && !hidden
@@ -119,11 +122,6 @@ export function ParticipantExperience({
               </Button>
             </div>
           )}
-          {revealMutation.isError && (
-            <p className={`${formErrorMessage} mt-4 text-sm`} role="alert">
-              {getErrorMessage(revealMutation.error, 'Não foi possível revelar. Tente novamente.')}
-            </p>
-          )}
         </section>
 
         <section className={`${panelClass} mt-8`} aria-labelledby="wall-title">
@@ -145,11 +143,6 @@ export function ParticipantExperience({
             {messageForm.formState.errors.content && (
               <p id="message-error" className={`${formErrorMessage} mt-2`} role="alert">
                 {messageForm.formState.errors.content.message}
-              </p>
-            )}
-            {createMessageMutation.isError && (
-              <p className={`${formErrorMessage} mt-3 text-sm`} role="alert">
-                {getErrorMessage(createMessageMutation.error, 'Não foi possível publicar a mensagem.')}
               </p>
             )}
             <Form.Button className="mt-4" type="submit" disabled={createMessageMutation.isPending}>
