@@ -152,6 +152,102 @@
 
 .reveal-shake { animation: reveal-shake 300ms steps(2, end) infinite; }
 
+@keyframes home-gift-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes home-gift-sparkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+
+.home-gift-link {
+  position: relative;
+  z-index: 1;
+  display: block;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.home-gift-link:hover,
+.home-gift-link:focus-visible {
+  transform: translateY(-10px);
+}
+
+.home-gift-link:active {
+  transform: translateY(-6px);
+}
+
+.home-gift-link:focus-visible {
+  outline: 3px solid #151515;
+  outline-offset: 6px;
+}
+
+.home-gift-link:hover .home-gift-float,
+.home-gift-link:focus-visible .home-gift-float {
+  animation-play-state: paused;
+}
+
+.home-gift-float {
+  animation: home-gift-float 3s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  transform-origin: center;
+  will-change: transform;
+}
+
+.home-gift-sparkle {
+  --sparkle-color: #facc15;
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  pointer-events: none;
+  background: var(--sparkle-color);
+  box-shadow:
+    0 -4px 0 var(--sparkle-color),
+    0 4px 0 var(--sparkle-color),
+    -4px 0 0 var(--sparkle-color),
+    4px 0 0 var(--sparkle-color);
+  animation: home-gift-sparkle 1.8s steps(2, end) infinite;
+}
+
+.home-gift-sparkle--one {
+  top: 18%;
+  left: 13%;
+  animation-delay: -0.3s;
+}
+
+.home-gift-sparkle--two {
+  --sparkle-color: #f59e0b;
+  top: 16%;
+  right: 13%;
+  animation-delay: -1.2s;
+}
+
+.home-gift-sparkle--three {
+  --sparkle-color: #f59e0b;
+  bottom: 18%;
+  left: 16%;
+  animation-delay: -0.8s;
+}
+
+.home-gift-sparkle--four {
+  right: 16%;
+  bottom: 14%;
+  animation-delay: -1.6s;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .reveal-shake { animation: none; }
+  .home-gift-link { transition: none; }
+  .home-gift-float {
+    animation: none;
+    transform: none;
+    will-change: auto;
+  }
+  .home-gift-sparkle {
+    animation: none;
+    opacity: 0.75;
+  }
 }
