@@ -76,11 +76,12 @@ function GroupContent({ groupId }: { groupId: string }) {
     onSuccess: async () => {
       queryClient.removeQueries({ queryKey: groupKey(groupId) })
       await queryClient.invalidateQueries({ queryKey: groupsKey })
+      appToast.success('Grupo excluído.', { id: 'delete-group' })
       navigate('/dashboard', { replace: true })
     },
     onError: () => {
       appToast.error('Não foi possível excluir o grupo.', {
-        id: 'delete-group-error',
+        id: 'delete-group',
       })
     },
   })

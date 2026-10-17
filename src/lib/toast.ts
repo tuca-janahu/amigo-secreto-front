@@ -21,13 +21,6 @@ const defaultDuration: Record<AppToastVariant, number> = {
   warning: 8_000,
 }
 
-const labels: Record<AppToastVariant, string> = {
-  success: 'Tudo certo',
-  error: 'Algo deu errado',
-  info: 'Informação',
-  warning: 'Atenção',
-}
-
 function showToast(
   variant: AppToastVariant,
   title: string,
@@ -35,7 +28,7 @@ function showToast(
 ) {
   const { action, description, duration, id } = options
 
-  return toast[variant](`${labels[variant]} — ${title}`, {
+  return toast[variant](title, {
     action,
     className: `app-toast app-toast--${variant}`,
     description,

@@ -83,10 +83,11 @@ export function DashboardPage() {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: groupsKey })
       setGroupToDelete(null)
+      appToast.success('Grupo excluído.', { id: 'delete-group' })
     },
     onError: () => {
       appToast.error('Não foi possível excluir o grupo.', {
-        id: 'delete-group-error',
+        id: 'delete-group',
       })
     },
   })

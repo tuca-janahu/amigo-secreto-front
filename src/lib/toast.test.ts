@@ -20,7 +20,7 @@ describe('appToast', () => {
     appToast.error('Não foi possível entrar.', { id: 'login-error' })
 
     expect(toastMocks.error).toHaveBeenCalledWith(
-      'Algo deu errado — Não foi possível entrar.',
+      'Não foi possível entrar.',
       expect.objectContaining({
         className: 'app-toast app-toast--error',
         duration: 8_000,
@@ -54,7 +54,7 @@ describe('appToast', () => {
     appToast.info('Aviso.', { duration: 2_000 })
 
     expect(toastMocks.info).toHaveBeenCalledWith(
-      'Informação — Aviso.',
+      'Aviso.',
       expect.objectContaining({ duration: 2_000 }),
     )
   })
