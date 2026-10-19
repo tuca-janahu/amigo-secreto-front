@@ -10,11 +10,14 @@ Frontend da aplicação de Amigo Secreto, separado do backend. Implementa autent
 
 ## Configuração
 
-Copie `.env.example` para `.env` e ajuste a URL da API:
+Copie `.env.example` para `.env` e ajuste as URLs da API e do frontend:
 
 ```ini
 VITE_API_URL=http://localhost:3000
+VITE_SITE_URL=http://localhost:5173
 ```
+
+Em produção, configure `VITE_SITE_URL` com a origem pública do frontend (por exemplo, `https://app.exemplo.com`). Em deploys, a URL de produção da plataforma é usada automaticamente quando essa variável não for definida.
 
 Depois, execute:
 
