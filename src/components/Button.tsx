@@ -26,7 +26,7 @@ const linkHoverVariants = {
 } as const
 
 const baseClassName =
-  'inline-flex cursor-pointer items-center justify-center border-2 border-black font-black uppercase tracking-wider transition focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-black'
+  'inline-flex min-h-11 touch-manipulation cursor-pointer items-center justify-center border-2 border-black font-black uppercase tracking-wider transition-[transform,box-shadow,background-color,color,opacity] focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-black active:translate-x-0.5 active:translate-y-0.5 motion-reduce:transition-none'
 
 const sizes = {
   small: 'px-3 py-2 text-xs',

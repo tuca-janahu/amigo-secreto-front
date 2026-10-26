@@ -4,7 +4,7 @@ import { getAuthReturnTo } from './navigation'
 
 function SessionLoading() {
   return (
-    <main className="grid min-h-screen place-items-center bg-white p-6 font-mono text-sm font-black uppercase tracking-wider text-black">
+    <main className="grid min-h-dvh place-items-center bg-white p-6 font-mono text-sm font-black uppercase tracking-wider text-black">
       <p className="border-2 border-black bg-amber-400 px-5 py-3 shadow-[4px_4px_0_#151515]">
         Verificando sessão...
       </p>

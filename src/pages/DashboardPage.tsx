@@ -170,7 +170,7 @@ export function DashboardPage() {
   }
 
   return (
-    <main className="min-h-screen bg-amber-100/50 px-5 py-6 font-mono text-black sm:px-8 lg:px-14">
+    <main className="min-h-dvh overflow-x-clip bg-amber-100/50 px-4 py-5 font-mono text-black sm:px-8 sm:py-6 lg:px-14">
       <header className="mx-auto flex max-w-6xl items-center justify-between gap-4">
         <PixelBrand />
         <Button variant="exit" icon={<ExitIcon />} onClick={handleLogout} disabled={isLeaving}>
@@ -178,7 +178,7 @@ export function DashboardPage() {
         </Button>
       </header>
 
-      <section className="mx-auto max-w-6xl py-12 sm:py-16" aria-labelledby="dashboard-title">
+      <section className="mx-auto max-w-6xl py-9 sm:py-16" aria-labelledby="dashboard-title">
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <div>
             <p className="inline-block border-2 border-black bg-amber-400 px-3 py-1 text-xs font-black uppercase tracking-wider shadow-[3px_3px_0_#151515]">Seus grupos e sorteios</p>
@@ -187,6 +187,7 @@ export function DashboardPage() {
             </h1>
           </div>
           <Button
+            className="w-full sm:w-auto"
             aria-controls="create-group-form"
             aria-expanded={showCreate}
             icon={showCreate ? <MinusIcon /> : <PlusIcon />}
@@ -209,7 +210,7 @@ export function DashboardPage() {
                 <Form.Input id="group-name" className="mt-2" autoComplete="off" {...register('name')} aria-invalid={Boolean(errors.name)} aria-describedby={errors.name ? 'group-name-error' : undefined} />
                 {errors.name && <p id="group-name-error" className={`${formErrorMessage} mt-2`} role="alert">{errors.name.message}</p>}
               </div>
-              <Form.Button type="submit" disabled={createGroup.isPending}>{createGroup.isPending ? 'Criando…' : 'Criar grupo'}</Form.Button>
+              <Form.Button className="w-full sm:w-auto" type="submit" disabled={createGroup.isPending}>{createGroup.isPending ? 'Criando…' : 'Criar grupo'}</Form.Button>
             </Form>
           </div>
         </div>
@@ -219,14 +220,14 @@ export function DashboardPage() {
             <div className={`${panelClass} mb-5 bg-amber-50`} role="alert">
               <p className="font-black">Não foi possível atualizar suas participações.</p>
               <p className="mt-2 text-sm text-black/70">Seus grupos continuam disponíveis, mas algum acesso ao sorteio pode não aparecer.</p>
-              <Button className="mt-4" variant="secondary" disabled={syncParticipations.isPending} onClick={() => syncParticipations.mutate()}>Tentar novamente</Button>
+              <Button className="mt-4 w-full sm:w-auto" variant="secondary" disabled={syncParticipations.isPending} onClick={() => syncParticipations.mutate()}>Tentar novamente</Button>
             </div>
           )}
           {groupsQuery.isPending && <div className={`${panelClass} font-black`} role="status">Carregando grupos…</div>}
           {groupsQuery.isError && (
             <div className={`${panelClass} bg-red-50`} role="alert">
               <p className="font-black text-red-700">Não foi possível carregar seus grupos.</p>
-              <Button className="mt-4" onClick={() => groupsQuery.refetch()}>Tentar novamente</Button>
+              <Button className="mt-4 w-full sm:w-auto" onClick={() => groupsQuery.refetch()}>Tentar novamente</Button>
             </div>
           )}
           {groupsQuery.data?.length === 0 && (

@@ -50,7 +50,7 @@ function ParticipantContent({ token }: { token: string }) {
 
   if (access.isPending || authIsPending) {
     return (
-      <main className="grid min-h-screen place-items-center bg-green-100 p-6 font-mono">
+      <main className="grid min-h-dvh place-items-center bg-green-100 p-6 font-mono">
         <p className="border-2 border-black bg-amber-400 p-4 font-black shadow-[4px_4px_0_#151515]">
           Abrindo convite...
         </p>
@@ -60,7 +60,7 @@ function ParticipantContent({ token }: { token: string }) {
 
   if (access.isError) {
     return (
-      <main className="grid min-h-screen place-items-center bg-red-50 p-6 font-mono text-black">
+      <main className="grid min-h-dvh place-items-center bg-red-50 p-6 font-mono text-black">
         <div className="max-w-md border-2 border-black bg-white p-7 text-center shadow-[7px_7px_0_#151515]">
           <div className="mx-auto grid size-16 place-items-center border-2 border-black bg-red-600 text-3xl font-black text-white">!</div>
           <h1 className="mt-6 text-2xl font-black uppercase">Convite indisponível</h1>
@@ -79,9 +79,9 @@ function ParticipantContent({ token }: { token: string }) {
       <p className="mt-2 text-sm leading-6 text-black/70">
         Entre ou crie uma conta com o mesmo e-mail do convite para não depender mais deste link.
       </p>
-      <div className="mt-4 flex flex-wrap gap-3">
-        <ButtonLink to="/login" state={{ returnTo }}>Entrar</ButtonLink>
-        <ButtonLink to="/register" state={{ returnTo }} variant="secondary">Criar conta</ButtonLink>
+      <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        <ButtonLink className="w-full sm:w-auto" to="/login" state={{ returnTo }}>Entrar</ButtonLink>
+        <ButtonLink className="w-full sm:w-auto" to="/register" state={{ returnTo }} variant="secondary">Criar conta</ButtonLink>
       </div>
     </aside>
   ) : claim.isPending ? (

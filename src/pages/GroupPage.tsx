@@ -88,7 +88,7 @@ function GroupContent({ groupId }: { groupId: string }) {
 
   if (group.isPending)
     return (
-      <main className="grid min-h-screen place-items-center bg-amber-100/50 p-6 font-mono">
+      <main className="grid min-h-dvh place-items-center bg-amber-100/50 p-6 font-mono">
         <p className="border-2 border-black bg-amber-400 p-4 font-black shadow-[4px_4px_0_#151515]">
           Carregando grupo...
         </p>
@@ -96,7 +96,7 @@ function GroupContent({ groupId }: { groupId: string }) {
     )
   if (group.isError)
     return (
-      <main className="grid min-h-screen place-items-center bg-amber-100/50 p-6 font-mono">
+      <main className="grid min-h-dvh place-items-center bg-amber-100/50 p-6 font-mono">
         <div className="max-w-md border-2 border-black bg-white p-6 shadow-[6px_6px_0_#151515]">
           <h1 className="text-2xl font-black">Grupo indisponível</h1>
           <p className="mt-3 text-sm text-black/70">
@@ -121,7 +121,7 @@ function GroupContent({ groupId }: { groupId: string }) {
 
   const editable = group.data.status === 'DRAFT'
   return (
-    <main className="min-h-screen bg-amber-100/50 px-5 py-6 font-mono text-black sm:px-8 lg:px-14">
+    <main className="min-h-dvh overflow-x-clip bg-amber-100/50 px-4 py-5 font-mono text-black sm:px-8 sm:py-6 lg:px-14">
       <header className="mx-auto flex max-w-6xl items-center justify-between gap-4">
         <PixelBrand />
         <ButtonLink size="small" variant="secondary" to="/dashboard" icon={<BackIcon />}>
@@ -152,7 +152,6 @@ function GroupContent({ groupId }: { groupId: string }) {
                 </Form.Label>
                 <Form.Input
                   id="rename-group"
-                  autoFocus
                   {...register('name')}
                   aria-invalid={Boolean(errors.name)}
                   aria-describedby={
@@ -170,15 +169,15 @@ function GroupContent({ groupId }: { groupId: string }) {
                 )}
               </div>
               <Form.Button
-                className="gap-2"
+                className="w-full gap-2 sm:w-auto"
                 type="submit"
                 disabled={rename.isPending}
               >
                 <SaveIcon />
-                {rename.isPending ? 'Salvando...' : 'Salvar'}
+                {rename.isPending ? 'Salvando…' : 'Salvar'}
               </Form.Button>
               <Form.Button
-                className="gap-2"
+                className="w-full gap-2 sm:w-auto"
                 variant="secondary"
                 onClick={() => setRenaming(false)}
               >
@@ -193,7 +192,7 @@ function GroupContent({ groupId }: { groupId: string }) {
               </h1>
               {editable && (
                 <Button
-                  className="gap-2"
+                  className="w-full gap-2 sm:w-auto"
                   variant="secondary"
                   onClick={() => setRenaming(true)}
                 >
@@ -240,7 +239,7 @@ function GroupContent({ groupId }: { groupId: string }) {
               participantes e restrições. Esta ação não pode ser desfeita.
             </p>
             <Button
-              className="mt-5 gap-2"
+              className="mt-5 w-full gap-2 sm:w-auto"
               variant="danger"
               onClick={() => {
                 remove.reset()

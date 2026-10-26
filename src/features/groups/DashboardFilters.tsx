@@ -20,7 +20,7 @@ type DashboardFiltersProps = {
 }
 
 const selectClass =
-  'h-12 w-full appearance-none border-2 border-black bg-white py-2 pr-11 pl-3 text-sm font-bold text-black shadow-[3px_3px_0_#151515] outline-none focus-visible:ring-3 focus-visible:ring-green-900'
+  'h-12 w-full appearance-none border-2 border-black bg-white py-2 pr-11 pl-3 text-base font-bold text-black shadow-[3px_3px_0_#151515] outline-none focus-visible:ring-3 focus-visible:ring-green-900 sm:text-sm'
 
 export function DashboardFilters({
   query,
@@ -128,7 +128,7 @@ export function DashboardFilters({
           </label>
 
           {hasActiveFilters && (
-            <Button className="h-12" size="small" variant="secondary" onClick={onClear}>
+            <Button className="h-12 w-full" size="small" variant="secondary" onClick={onClear}>
               Limpar filtros
             </Button>
           )}

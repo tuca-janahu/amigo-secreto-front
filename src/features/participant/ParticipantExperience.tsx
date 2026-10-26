@@ -72,7 +72,7 @@ export function ParticipantExperience({
   const showResult = Boolean(result) && !hidden
 
   return (
-    <main className="min-h-screen bg-green-100 px-4 py-5 font-mono text-black sm:px-8 sm:py-8">
+    <main className="min-h-dvh overflow-x-clip bg-green-100 px-4 py-5 font-mono text-black sm:px-8 sm:py-8">
       <header className="mx-auto flex max-w-3xl items-center justify-between gap-4">
         <PixelBrand />
         {headerAction}
@@ -99,13 +99,13 @@ export function ParticipantExperience({
           {revealMutation.isPending ? (
             <div className="reveal-shake py-8">
               <div className="mx-auto grid size-24 place-items-center border-2 border-black bg-red-600 text-5xl font-black text-white shadow-[5px_5px_0_#151515]">?</div>
-              <p className="mt-6 font-black uppercase tracking-wider">Misturando os nomes...</p>
+              <p className="mt-6 font-black uppercase tracking-wider">Misturando os nomes…</p>
             </div>
           ) : showResult ? (
             <div className="py-5">
               <p className="text-sm font-black uppercase tracking-widest">Você tirou</p>
               <p className="mt-4 break-words text-4xl font-black uppercase text-red-600 sm:text-6xl">{result}</p>
-              <Button className="mt-7" variant="secondary" onClick={() => setHidden(true)}>
+              <Button className="mt-7 w-full sm:w-auto" variant="secondary" onClick={() => setHidden(true)}>
                 Esconder novamente
               </Button>
             </div>
@@ -114,7 +114,7 @@ export function ParticipantExperience({
               <div className="mx-auto grid size-20 place-items-center border-2 border-black bg-amber-400 text-4xl font-black shadow-[5px_5px_0_#151515]">?</div>
               <h2 className="mt-6 text-xl font-black">Seu amigo secreto ainda está escondido.</h2>
               <Button
-                className="mt-6 px-6 py-3"
+                className="mt-6 w-full px-6 py-3 sm:w-auto"
                 disabled={revealMutation.isPending}
                 onClick={() => revealMutation.mutate()}
               >
@@ -145,12 +145,12 @@ export function ParticipantExperience({
                 {messageForm.formState.errors.content.message}
               </p>
             )}
-            <Form.Button className="mt-4" type="submit" disabled={createMessageMutation.isPending}>
-              {createMessageMutation.isPending ? 'Enviando...' : 'Enviar anonimamente'}
+            <Form.Button className="mt-4 w-full sm:w-auto" type="submit" disabled={createMessageMutation.isPending}>
+              {createMessageMutation.isPending ? 'Enviando…' : 'Enviar anonimamente'}
             </Form.Button>
           </Form>
           <div className="mt-8 grid gap-3 border-t-2 border-black pt-6">
-            {messages.isPending && <p className="text-sm font-bold">Carregando mensagens...</p>}
+            {messages.isPending && <p className="text-sm font-bold" role="status">Carregando mensagens…</p>}
             {messages.isError && <p className="text-sm font-bold text-red-700" role="alert">Não foi possível carregar o mural.</p>}
             {messages.data?.length === 0 && <p className="text-sm text-black/60">O mural ainda está vazio.</p>}
             {messages.data?.map((message) => (

@@ -1,5 +1,66 @@
 @import "tailwindcss";
 
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+html {
+  overflow-x: clip;
+}
+
+body {
+  margin: 0;
+  min-width: 20rem;
+  overflow-x: clip;
+}
+
+button,
+a,
+input,
+select,
+textarea,
+summary {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgb(20 83 45 / 18%);
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p,
+li,
+dd {
+  overflow-wrap: anywhere;
+}
+
+.dialog-backdrop {
+  padding-top: max(1rem, env(safe-area-inset-top));
+  padding-right: max(1rem, env(safe-area-inset-right));
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  padding-left: max(1rem, env(safe-area-inset-left));
+}
+
+.dialog-panel {
+  max-height: calc(100dvh - max(2rem, env(safe-area-inset-top) + env(safe-area-inset-bottom)));
+}
+
+.feedback-trigger {
+  right: max(1.25rem, env(safe-area-inset-right));
+  bottom: max(1.25rem, env(safe-area-inset-bottom));
+}
+
+@media (min-width: 640px) {
+  .feedback-trigger {
+    right: max(1.75rem, env(safe-area-inset-right));
+    bottom: max(1.75rem, env(safe-area-inset-bottom));
+  }
+}
+
 .app-toast {
   --toast-accent: #1f2937;
   position: relative;
@@ -12,7 +73,7 @@
   border: 2px solid #151515;
   border-left: 0.65rem solid var(--toast-accent);
   background: #fffbeb;
-  padding: 0.85rem 2.5rem 0.85rem 0.85rem;
+  padding: 0.85rem 3.25rem 0.85rem 0.85rem;
   color: #151515;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   box-shadow: 5px 5px 0 #151515;
@@ -92,8 +153,8 @@
   top: 0.5rem;
   right: 0.5rem;
   display: grid;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 2.75rem;
+  height: 2.75rem;
   cursor: pointer;
   place-items: center;
   border: 2px solid #151515;
@@ -110,6 +171,7 @@
 
 [data-sonner-toaster] {
   z-index: 70 !important;
+  top: max(1rem, env(safe-area-inset-top)) !important;
 }
 
 @media (max-width: 639px) {
@@ -127,6 +189,12 @@
   .app-toast__action {
     grid-column: 2;
     justify-self: start;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html {
+    overscroll-behavior: none;
   }
 }
 

@@ -21,7 +21,7 @@ function AuthenticatedParticipantContent({ groupId }: { groupId: string }) {
 
   if (group.isPending) {
     return (
-      <main className="grid min-h-screen place-items-center bg-green-100 p-6 font-mono">
+      <main className="grid min-h-dvh place-items-center bg-green-100 p-6 font-mono">
         <p className="border-2 border-black bg-amber-400 p-4 font-black shadow-[4px_4px_0_#151515]">
           Carregando sorteio...
         </p>

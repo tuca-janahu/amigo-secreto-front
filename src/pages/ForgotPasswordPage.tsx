@@ -33,7 +33,7 @@ export function ForgotPasswordPage() {
   }
 
   return (
-    <main className="grid min-h-screen place-items-center bg-amber-100 px-5 py-12 font-mono text-black sm:px-8">
+    <main className="grid min-h-dvh place-items-center bg-amber-100 px-4 py-8 font-mono text-black sm:px-8 sm:py-12">
       <div className="w-full max-w-md border-2 border-black bg-white p-6 shadow-[7px_7px_0_#151515] sm:p-10" aria-labelledby="forgot-password-title">
         <div className="flex items-center justify-between gap-4">
           <PixelBrand />
@@ -50,9 +50,9 @@ export function ForgotPasswordPage() {
             <p className="mt-4 text-sm leading-6 text-black/70">Informe o e-mail da sua conta para receber o link de redefinição.</p>
             <Form className="mt-6 grid gap-2" onSubmit={handleSubmit(onSubmit)}>
               <Form.Label htmlFor="email">E-mail</Form.Label>
-              <Form.Input id="email" className="py-3 placeholder:text-black/50" type="email" autoComplete="email" aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? 'email-error' : undefined} {...register('email')} />
+              <Form.Input id="email" className="py-3 placeholder:text-black/50" type="email" inputMode="email" autoComplete="email" spellCheck={false} aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? 'email-error' : undefined} {...register('email')} />
               {errors.email && <p id="email-error" className="border border-red-300 bg-red-50 px-3 py-2 text-xs font-bold text-red-700" role="alert">{errors.email.message}</p>}
-              <Form.Button className="mt-5 py-3 text-sm" type="submit" disabled={isSubmitting}>{isSubmitting ? 'Aguarde...' : 'Enviar link'}</Form.Button>
+              <Form.Button className="mt-5 w-full py-3 text-sm" type="submit" disabled={isSubmitting}>{isSubmitting ? 'Aguarde…' : 'Enviar link'}</Form.Button>
             </Form>
           </>
         )}

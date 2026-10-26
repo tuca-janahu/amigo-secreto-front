@@ -33,13 +33,13 @@ export function AuthForm({ submitLabel, isSubmitting, includeName = false, onSub
       </>}
 
       <Form.Label className="mt-3" htmlFor="email">E-mail</Form.Label>
-      <Form.Input id="email" className="py-3 placeholder:text-black/50" type="email" autoComplete="email" aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? 'email-error' : undefined} {...register('email')} />
+      <Form.Input id="email" className="py-3 placeholder:text-black/50" type="email" inputMode="email" autoComplete="email" spellCheck={false} aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? 'email-error' : undefined} {...register('email')} />
       {errors.email && <p id="email-error" className="border border-red-300 bg-red-50 px-3 py-2 text-xs font-bold text-red-700" role="alert">{errors.email.message}</p>}
 
       <Form.Label className="mt-3" htmlFor="password">Senha</Form.Label>
       <div className="relative">
         <Form.Input id="password" className="py-3 pr-12 placeholder:text-black/50" type={showPassword ? 'text' : 'password'} autoComplete={includeName ? 'new-password' : 'current-password'} aria-invalid={Boolean(errors.password)} aria-describedby={errors.password ? 'password-error' : undefined} {...register('password')} />
-        <button className="absolute inset-y-0 right-2 grid w-8 cursor-pointer place-items-center border-0 bg-transparent p-0 text-black hover:opacity-70 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-black" type="button" aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'} aria-pressed={showPassword} onClick={() => setShowPassword((value) => !value)}>
+        <button className="absolute inset-y-0 right-0 grid w-11 touch-manipulation cursor-pointer place-items-center border-0 bg-transparent p-0 text-black active:opacity-60 focus-visible:outline-3 focus-visible:outline-offset-[-3px] focus-visible:outline-black" type="button" aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'} aria-pressed={showPassword} onClick={() => setShowPassword((value) => !value)}>
           <EyeIcon hidden={showPassword} />
         </button>
       </div>
@@ -49,15 +49,15 @@ export function AuthForm({ submitLabel, isSubmitting, includeName = false, onSub
         <Form.Label className="mt-3" htmlFor="confirm-password">Confirmar senha</Form.Label>
         <div className="relative">
           <Form.Input id="confirm-password" className="py-3 pr-12 placeholder:text-black/50" type={showConfirmation ? 'text' : 'password'} autoComplete="new-password" aria-invalid={Boolean(errors.confirmPassword)} aria-describedby={errors.confirmPassword ? 'confirm-password-error' : undefined} {...register('confirmPassword')} />
-          <button className="absolute inset-y-0 right-2 grid w-8 cursor-pointer place-items-center border-0 bg-transparent p-0 text-black hover:opacity-70 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-black" type="button" aria-label={showConfirmation ? 'Ocultar confirmação de senha' : 'Mostrar confirmação de senha'} aria-pressed={showConfirmation} onClick={() => setShowConfirmation((value) => !value)}>
+          <button className="absolute inset-y-0 right-0 grid w-11 touch-manipulation cursor-pointer place-items-center border-0 bg-transparent p-0 text-black active:opacity-60 focus-visible:outline-3 focus-visible:outline-offset-[-3px] focus-visible:outline-black" type="button" aria-label={showConfirmation ? 'Ocultar confirmação de senha' : 'Mostrar confirmação de senha'} aria-pressed={showConfirmation} onClick={() => setShowConfirmation((value) => !value)}>
             <EyeIcon hidden={showConfirmation} />
           </button>
         </div>
         {errors.confirmPassword && <p id="confirm-password-error" className="border border-red-300 bg-red-50 px-3 py-2 text-xs font-bold text-red-700" role="alert">{errors.confirmPassword.message}</p>}
       </>}
 
-      <Form.Button className="mt-5 py-3 text-sm" type="submit" disabled={isSubmitting}>
-        {isSubmitting ? 'Aguarde...' : submitLabel}
+      <Form.Button className="mt-5 w-full py-3 text-sm" type="submit" disabled={isSubmitting}>
+        {isSubmitting ? 'Aguarde…' : submitLabel}
       </Form.Button>
     </Form>
   )

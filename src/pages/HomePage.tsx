@@ -5,7 +5,7 @@ import presentePixelArt from '../assets/presente-pixel-art.svg?no-inline'
 
 export function HomePage() {
   return (
-    <main className="min-h-screen overflow-hidden bg-amber-100/50 px-5 py-6 font-mono text-black sm:px-8">
+    <main className="min-h-dvh overflow-hidden bg-amber-100/50 px-4 py-5 font-mono text-black sm:px-8 sm:py-6">
       <header className="mx-auto flex max-w-7xl items-center justify-between gap-4">
         <PixelBrand />
         <ButtonLink className="shadow-[3px_3px_0_#151515] hover:shadow-[1px_1px_0_#151515]" size="small" to="/login">
@@ -13,7 +13,7 @@ export function HomePage() {
         </ButtonLink>
       </header>
 
-      <section className="mx-auto grid max-w-7xl items-center gap-10 py-16 lg:grid-cols-[1.05fr_0.95fr] lg:py-24" aria-labelledby="home-title">
+      <section className="mx-auto grid max-w-7xl items-center gap-10 py-10 sm:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:py-24" aria-labelledby="home-title">
         <div>
           <p className="mb-5 inline-block border-2 border-black bg-green-100 px-3 py-1 text-xs font-black uppercase tracking-[0.16em] shadow-[3px_3px_0_#151515]">
             Sorteio sem complicação
@@ -24,18 +24,18 @@ export function HomePage() {
           <p className="mt-6 max-w-lg text-base leading-7 text-black/70 sm:text-lg">
             Crie um grupo, convide as pessoas e deixe o Sorteador cuidar do sorteio.. obviamente. Simples, privado e divertido!
           </p>
-          <div className="mt-8 flex flex-wrap gap-4">
-            <ButtonLink size="large" to="/register">Começar agora</ButtonLink>
-            <ButtonLink className="text-red-600 shadow-[4px_4px_0_#151515]" size="large" variant="secondary" to="/login">
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
+            <ButtonLink className="w-full sm:w-auto" size="large" to="/register">Começar agora</ButtonLink>
+            <ButtonLink className="w-full text-red-600 shadow-[4px_4px_0_#151515] sm:w-auto" size="large" variant="secondary" to="/login">
               Já tenho conta
             </ButtonLink>
           </div>
         </div>
 
-        <div className="relative mx-auto w-full max-w-md border-2 border-black bg-green-900 p-5 shadow-[8px_8px_0_#151515] sm:p-8">
+        <div className="relative mx-auto w-full max-w-md border-2 border-black bg-green-900 p-4 shadow-[8px_8px_0_#151515] sm:p-8">
           <div className="absolute -left-3 -top-3 size-6 border-2 border-black bg-white" />
           <div className="absolute -bottom-4 -right-4 size-9 border-2 border-black bg-red-600" />
-          <div className="relative grid min-h-72 place-items-center border-2 border-dashed border-black bg-white p-6">
+          <div className="relative grid min-h-64 place-items-center border-2 border-dashed border-black bg-white p-5 sm:min-h-72 sm:p-6">
             <span aria-hidden="true" className="home-gift-sparkle home-gift-sparkle--one" />
             <span aria-hidden="true" className="home-gift-sparkle home-gift-sparkle--two" />
             <span aria-hidden="true" className="home-gift-sparkle home-gift-sparkle--three" />
