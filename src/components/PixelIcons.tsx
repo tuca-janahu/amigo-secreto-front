@@ -70,3 +70,9 @@ export function SortIcon(){
 export function ChevronDownIcon() {
   return <svg aria-hidden="true" className="size-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M13 16h-2v-2h2v2Zm-2-2H9v-2h2v2Zm4 0h-2v-2h2v2Zm-6-2H7v-2h2v2Zm8 0h-2v-2h2v2ZM7 10H5V8h2v2Zm12 0h-2V8h2v2Z"/></svg>
 }
+
+export function ExternalLinkIcon() {
+  return (
+    <svg aria-hidden="true" className="size-4 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M11 7H5v12h12v-6h2v8H3V5h8v2Zm0 8H9v-2h2v2Zm2-2h-2v-2h2v2Zm2-2h-2V9h2v2Zm6 0h-2V7h-2V5h-4V3h8v8Zm-4-2h-2V7h2v2Z"/></svg>
+  )
+}
