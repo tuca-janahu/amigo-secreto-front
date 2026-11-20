@@ -1,10 +1,11 @@
 import { lazy, Suspense } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { ProtectedRoute, PublicOnlyRoute } from './features/auth/RouteGuards'
+import { AdminRoute, ProtectedRoute, PublicOnlyRoute } from './features/auth/RouteGuards'
 import { FeedbackWidget } from './features/feedback/FeedbackWidget'
 import { AppToaster } from './components/Toast'
 
 const HomePage = lazy(() => import('./pages/HomePage').then((module) => ({ default: module.HomePage })))
+const AdminPage = lazy(() => import('./pages/AdminPage').then((module) => ({ default: module.AdminPage })))
 const LoginPage = lazy(() => import('./pages/LoginPage').then((module) => ({ default: module.LoginPage })))
 const RegisterPage = lazy(() => import('./pages/RegisterPage').then((module) => ({ default: module.RegisterPage })))
 const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage').then((module) => ({ default: module.ForgotPasswordPage })))
@@ -38,6 +39,9 @@ export function App() {
           </Route>
           <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
           <Route element={<ProtectedRoute />}>
+            <Route element={<AdminRoute />}>
+              <Route path="/dashboard/admin" element={<AdminPage />} />
+            </Route>
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/dashboard/groups/:groupId" element={<GroupPage />} />
             <Route path="/dashboard/groups/:groupId/participation" element={<AuthenticatedParticipantPage />} />

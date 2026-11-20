@@ -26,3 +26,10 @@ export function PublicOnlyRoute() {
   if (user) return <Navigate to={getAuthReturnTo(location.state)} replace />
   return <Outlet />
 }
+
+export function AdminRoute() {
+  const { data: user, isPending } = useAuth()
+  if (isPending) return <SessionLoading />
+  if (!user?.isAdmin) return <Navigate to="/dashboard" replace />
+  return <Outlet />
+}
