@@ -15,6 +15,7 @@ export type PasswordReset = {
 }
 
 export type AuthenticatedUser = {
+  isAdmin?: boolean
   id: string
   name: string
   email: string

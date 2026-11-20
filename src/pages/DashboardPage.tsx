@@ -4,7 +4,7 @@ import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { PixelBrand, PlusIcon, MinusIcon, ExitIcon } from '../components/PixelIcons'
-import { Button } from '../components/Button'
+import { Button, ButtonLink } from '../components/Button'
 import { appToast } from '../lib/toast'
 import { Form } from '../components/Form'
 import { authQueryKey, useAuth } from '../features/auth/auth.queries'
@@ -164,6 +164,7 @@ export function DashboardPage() {
         id: 'logout-error',
       })
     } finally {
+      queryClient.removeQueries({ queryKey: ['admin'] })
       queryClient.removeQueries({ queryKey: authQueryKey })
       navigate('/', { replace: true })
     }
@@ -173,9 +174,12 @@ export function DashboardPage() {
     <main className="min-h-dvh overflow-x-clip bg-amber-100/50 px-4 py-5 font-mono text-black sm:px-8 sm:py-6 lg:px-14">
       <header className="mx-auto flex max-w-6xl items-center justify-between gap-4">
         <PixelBrand />
+        <div className="flex flex-wrap justify-end gap-3">
+        {user?.isAdmin && <ButtonLink to="/dashboard/admin" variant="secondary">Auditoria</ButtonLink>}
         <Button variant="exit" icon={<ExitIcon />} onClick={handleLogout} disabled={isLeaving}>
           {isLeaving ? 'Saindo…' : 'Sair'}
         </Button>
+        </div>
       </header>
 
       <section className="mx-auto max-w-6xl py-9 sm:py-16" aria-labelledby="dashboard-title">
