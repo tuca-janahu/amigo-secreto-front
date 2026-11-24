@@ -13,6 +13,7 @@ const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage').then((m
 const DashboardPage = lazy(() => import('./pages/DashboardPage').then((module) => ({ default: module.DashboardPage })))
 const GroupPage = lazy(() => import('./pages/GroupPage').then((module) => ({ default: module.GroupPage })))
 const ParticipantPage = lazy(() => import('./pages/ParticipantPage').then((module) => ({ default: module.ParticipantPage })))
+const GroupInvitationPage = lazy(() => import('./pages/GroupInvitationPage').then((module) => ({ default: module.GroupInvitationPage })))
 const AuthenticatedParticipantPage = lazy(() => import('./pages/AuthenticatedParticipantPage').then((module) => ({ default: module.AuthenticatedParticipantPage })))
 
 function RouteLoading() {
@@ -32,6 +33,7 @@ export function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/s/:token" element={<ParticipantPage />} />
+          <Route path="/invite/:token" element={<GroupInvitationPage />} />
           <Route element={<PublicOnlyRoute />}>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />

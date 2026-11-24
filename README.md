@@ -37,6 +37,28 @@ pnpm build
 
 ## Endpoints consumidos
 
+### Participação por link
+
+O organizador de um grupo em `DRAFT` pode gerar, copiar, substituir ou desativar
+um link na seção **Convide participantes**. Copiar reutiliza o link ativo;
+somente gerar outro link invalida o anterior. A adição manual e os convites por
+e-mail após o sorteio continuam disponíveis.
+
+A rota pública `/invite/:token` preserva o convite ao entrar ou criar uma conta.
+A entrada no grupo exige confirmação explícita. Antes do sorteio, a área do
+participante mostra a confirmação e permite atualizar o status, sem carregar
+revelação ou mensagens. Os participantes podem ser atualizados manualmente pelo
+organizador, incluindo a viabilidade do sorteio; não há polling.
+
+Requer o backend atualizado com a migration
+`20261123000000_add_group_invitations` aplicada.
+
+- `GET|POST|DELETE /groups/:groupId/invitation`
+- `GET /public/group-invitations/:token`
+- `POST /public/group-invitations/:token/join`
+
+### Demais fluxos
+
 - `POST /auth/register`
 - `POST /auth/login`
 - `GET /auth/me`

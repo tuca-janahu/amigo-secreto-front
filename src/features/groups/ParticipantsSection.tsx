@@ -112,6 +112,11 @@ export function ParticipantsSection({ groupId, editable }: Props) {
     onError: () => appToast.error('Não foi possível importar os participantes.', { id: 'participant-import' }),
   })
   const currentUserIsParticipant = hasParticipantEmail(participants.data, auth.data?.email)
+  const manualRefresh = useMutation({
+    mutationFn: () => queryClient.invalidateQueries({ queryKey: groupKey(groupId) }, { throwOnError: true }),
+    onSuccess: () => appToast.success('Participantes e viabilidade atualizados.'),
+    onError: () => appToast.error('Não foi possível atualizar o grupo. Tente novamente.'),
+  })
   const isAddingCurrentUser = create.isPending && create.variables.email === auth.data?.email
 
   const addCurrentUser = () => {
@@ -124,6 +129,7 @@ export function ParticipantsSection({ groupId, editable }: Props) {
       <div className="min-w-0"><p className="text-xs font-black uppercase tracking-wider text-red-600">Turma</p><h2 id="participants-title" className="mt-2 text-2xl font-black uppercase">Participantes</h2></div>
       <span className="shrink-0 border-2 border-black bg-amber-400 px-2 py-1 text-xs font-black">{participants.data?.length ?? 0}</span>
     </div>
+    <Button className="mt-5 w-full sm:w-auto" variant="secondary" disabled={manualRefresh.isPending || participants.isFetching} onClick={() => manualRefresh.mutate()}>{manualRefresh.isPending ? 'Atualizando…' : 'Atualizar participantes'}</Button>
     {editable && <div className="mt-6 border-t-2 border-dashed border-black pt-5">
       <div className="flex flex-col items-stretch justify-between gap-4 border-2 border-black bg-amber-50 p-4 sm:flex-row sm:items-center">
         <div><h3 className="font-black uppercase">Você vai participar?</h3><p className="mt-1 text-xs leading-5 text-black/60">Adicione seu nome e e-mail com um clique.</p></div>

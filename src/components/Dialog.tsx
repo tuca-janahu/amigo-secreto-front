@@ -82,6 +82,19 @@ function DialogRoot({ children, className = '', onDismiss, open }: DialogRootPro
     const firstElement = focusableElements[0]
     const lastElement = focusableElements.at(-1)
 
+    // During submission all controls may be disabled. Keep focus in the dialog.
+    if (!firstElement || !lastElement) {
+      event.preventDefault()
+      panelRef.current.focus()
+      return
+    }
+
+    if (!focusableElements.includes(document.activeElement as HTMLElement)) {
+      event.preventDefault()
+      ;(event.shiftKey ? lastElement : firstElement).focus()
+      return
+    }
+
     if (event.shiftKey && document.activeElement === firstElement) {
       event.preventDefault()
       lastElement?.focus()

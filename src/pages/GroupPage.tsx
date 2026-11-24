@@ -9,6 +9,7 @@ import { Form } from '../components/Form'
 import { DrawSection } from '../features/groups/DrawSection'
 import { DeleteGroupModal } from '../features/groups/DeleteGroupModal'
 import { InvitationsSection } from '../features/groups/InvitationsSection'
+import { GroupInvitationSection } from '../features/groups/GroupInvitationSection'
 import { ParticipantsSection } from '../features/groups/ParticipantsSection'
 import { RestrictionsSection } from '../features/groups/RestrictionsSection'
 import {
@@ -209,6 +210,7 @@ function GroupContent({ groupId }: { groupId: string }) {
             </p>
           )}
         </section>
+        {editable && <GroupInvitationSection groupId={groupId} />}
         <div className="mt-8 grid items-start gap-8 xl:grid-cols-2">
           <ParticipantsSection groupId={groupId} editable={editable} />
           <RestrictionsSection groupId={groupId} editable={editable} />

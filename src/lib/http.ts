@@ -4,6 +4,7 @@ export class ApiError extends Error {
   constructor(
     message: string,
     public readonly status: number,
+    public readonly code?: string,
   ) {
     super(message)
     this.name = 'ApiError'
@@ -60,7 +61,10 @@ export async function http<T>(path: string, options: RequestOptions = {}): Promi
   const data = await parseResponse(response)
 
   if (!response.ok) {
-    throw new ApiError(getErrorMessage(data, 'Não foi possível concluir a solicitação.'), response.status)
+    const code = typeof data === 'object' && data !== null && 'error' in data && typeof data.error === 'string'
+      ? data.error
+      : undefined
+    throw new ApiError(getErrorMessage(data, 'Não foi possível concluir a solicitação.'), response.status, code)
   }
 
   return data as T
