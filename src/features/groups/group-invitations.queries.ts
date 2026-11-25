@@ -11,8 +11,8 @@ export const groupInvitationQueryOptions = (groupId: string) => queryOptions({
   refetchOnReconnect: false,
   gcTime: 0,
 })
-export const publicInvitationQueryOptions = (token: string) => queryOptions({
-  queryKey: ['public-group-invitation', token],
+export const publicInvitationQueryOptions = (token: string, userId?: string) => queryOptions({
+  queryKey: ['public-group-invitation', token, userId ?? null],
   queryFn: () => groupInvitationsService.preview(token),
   retry: false,
   refetchOnWindowFocus: false,

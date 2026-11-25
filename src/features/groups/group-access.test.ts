@@ -7,6 +7,16 @@ describe('group card actions', () => {
     {
       label: 'an owner who participates',
       group: {
+        status: 'DRAFT' as const,
+        roles: ['OWNER', 'PARTICIPANT'] as GroupRole[],
+        participant: { id: 'participant-1', name: 'Owner', revealed: false },
+      },
+      expected: { canManage: true, canViewDraw: false, manageIconOnly: false },
+    },
+    {
+      label: 'an owner after the draw',
+      group: {
+        status: 'SORTEADO' as const,
         roles: ['OWNER', 'PARTICIPANT'] as GroupRole[],
         participant: { id: 'participant-1', name: 'Owner', revealed: false },
       },
@@ -14,12 +24,13 @@ describe('group card actions', () => {
     },
     {
       label: 'an owner who does not participate',
-      group: { roles: ['OWNER'] as GroupRole[], participant: null },
+      group: { status: 'DRAFT' as const, roles: ['OWNER'] as GroupRole[], participant: null },
       expected: { canManage: true, canViewDraw: false, manageIconOnly: false },
     },
     {
       label: 'a participant who is not the owner',
       group: {
+        status: 'DRAFT' as const,
         roles: ['PARTICIPANT'] as GroupRole[],
         participant: { id: 'participant-2', name: 'Guest', revealed: false },
       },

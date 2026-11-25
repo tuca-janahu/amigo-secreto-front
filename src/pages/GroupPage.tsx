@@ -210,6 +210,11 @@ function GroupContent({ groupId }: { groupId: string }) {
             </p>
           )}
         </section>
+        {group.data.status === 'SORTEADO' && group.data.participant && (
+          <ButtonLink className="mt-6 w-full sm:w-auto" to={`/dashboard/groups/${groupId}/participation`}>
+            Ver meu amigo secreto
+          </ButtonLink>
+        )}
         {editable && <GroupInvitationSection groupId={groupId} />}
         <div className="mt-8 grid items-start gap-8 xl:grid-cols-2">
           <ParticipantsSection groupId={groupId} editable={editable} />

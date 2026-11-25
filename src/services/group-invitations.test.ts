@@ -37,6 +37,17 @@ describe('group entry invitations', () => {
     expect(fetch).toHaveBeenLastCalledWith(expect.stringMatching(/\/public\/group-invitations\/token\/join$/), expect.objectContaining({ method: 'POST', credentials: 'include', body: undefined }))
   })
 
+  it('keeps ownership context scoped to the authenticated account in the preview cache', async () => {
+    const preview = { group: { name: 'Amigos' }, ownerGroupId: 'group-1' }
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(json(preview)))
+    expect(await groupInvitationsService.preview('token')).toEqual(preview)
+    const owner = publicInvitationQueryOptions('token', 'owner')
+    const guest = publicInvitationQueryOptions('token', 'guest')
+    const anonymous = publicInvitationQueryOptions('token')
+    expect(owner.queryKey).not.toEqual(guest.queryKey)
+    expect(owner.queryKey).not.toEqual(anonymous.queryKey)
+  })
+
   it.each([
     ['INVITATION_NOT_FOUND', 404, 'Peça outro link'],
     ['INVITATION_CLOSED', 409, 'encerradas'],
