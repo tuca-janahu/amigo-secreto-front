@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useIsMutating, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '../../components/Button'
@@ -6,17 +6,26 @@ import { Dialog } from '../../components/Dialog'
 import { appToast } from '../../lib/toast'
 import { panelClass } from '../../lib/styles'
 import { sorteioService } from '../../services/sorteio'
+import type { AccessibleGroup } from '../../services/groups'
+import { groupInvitationKey } from './group-invitations.queries'
 import { groupKey, groupsKey, invitationsKey, participantsKey, restrictionsKey, viabilityKey, viabilityQueryOptions } from './group.queries'
 
 export function DrawSection({ groupId, canViewDraw }: { groupId: string; canViewDraw: boolean }) {
   const queryClient = useQueryClient()
+  const invitationChanging = useIsMutating({ mutationKey: ['change-group-invitation', groupId] }) > 0
   const navigate = useNavigate()
   const viability = useQuery(viabilityQueryOptions(groupId))
   const [confirming, setConfirming] = useState(false)
   const draw = useMutation({
+    mutationKey: ['draw-group', groupId],
     mutationFn: () => sorteioService.draw(groupId),
-    onSuccess: async () => {
+    onSuccess: async (drawnGroup) => {
       setConfirming(false)
+      // The completed draw is authoritative even if the following refresh fails.
+      queryClient.setQueryData<AccessibleGroup>(groupKey(groupId), (current) =>
+        current ? { ...current, ...drawnGroup } : current,
+      )
+      queryClient.removeQueries({ queryKey: groupInvitationKey(groupId) })
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: groupKey(groupId) }),
         queryClient.invalidateQueries({ queryKey: groupsKey }),
@@ -60,7 +69,7 @@ export function DrawSection({ groupId, canViewDraw }: { groupId: string; canView
       <p className={`mt-5 inline-block border-2 border-black px-3 py-2 text-sm font-black ${state.style}`}>{state.label}</p>
     )}
     <p className="mt-4 max-w-2xl text-sm leading-6">Ao sortear, a composição do grupo será bloqueada e os convites serão enviados por e-mail. Você nunca verá quem tirou quem.</p>
-    <Button className="mt-5 w-full px-5 py-3 sm:w-auto" disabled={!viability.data?.viable || draw.isPending} onClick={() => setConfirming(true)}>Realizar sorteio</Button>
+    <Button className="mt-5 w-full px-5 py-3 sm:w-auto" disabled={!viability.data?.viable || draw.isPending || invitationChanging} onClick={() => setConfirming(true)}>Realizar sorteio</Button>
 
     <Dialog open={confirming} onDismiss={() => { if (!draw.isPending) setConfirming(false) }}>
       <Dialog.Title>Confirmar sorteio?</Dialog.Title>

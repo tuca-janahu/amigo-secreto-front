@@ -9,7 +9,7 @@ export function getAuthReturnTo(state: unknown): string {
     state !== null &&
     'returnTo' in state &&
     typeof state.returnTo === 'string' &&
-    state.returnTo.startsWith('/s/')
+    /^\/(?:s|invite)\/[A-Za-z0-9_-]+$/.test(state.returnTo)
   ) {
     return state.returnTo
   }

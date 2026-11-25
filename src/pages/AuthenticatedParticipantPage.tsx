@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Navigate, useParams } from 'react-router-dom'
-import { ButtonLink } from '../components/Button'
+import { Button, ButtonLink } from '../components/Button'
 import { BackIcon } from '../components/PixelIcons'
 import { groupKey, groupQueryOptions, groupsKey } from '../features/groups/group.queries'
 import { ParticipantExperience } from '../features/participant/ParticipantExperience'
@@ -23,14 +23,42 @@ function AuthenticatedParticipantContent({ groupId }: { groupId: string }) {
     return (
       <main className="grid min-h-dvh place-items-center bg-green-100 p-6 font-mono">
         <p className="border-2 border-black bg-amber-400 p-4 font-black shadow-[4px_4px_0_#151515]">
-          Carregando sorteio...
+          Carregando grupo…
         </p>
       </main>
     )
   }
 
-  if (group.isError || !group.data.participant) {
+  if (group.isError) {
+    return <main className="grid min-h-dvh place-items-center bg-green-100 px-4 py-8 font-mono text-black">
+      <section className="w-full max-w-xl border-2 border-black bg-white p-6 shadow-[6px_6px_0_#151515]">
+        <h1 className="text-2xl font-black">Não foi possível carregar o grupo</h1>
+        <p className="mt-4 text-sm leading-6" role="alert">Verifique sua conexão e tente novamente.</p>
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+          <Button disabled={group.isFetching} onClick={() => group.refetch()}>{group.isFetching ? 'Atualizando…' : 'Tentar novamente'}</Button>
+          <ButtonLink to="/dashboard" variant="secondary">Voltar ao dashboard</ButtonLink>
+        </div>
+      </section>
+    </main>
+  }
+
+  if (!group.data.participant) {
     return <Navigate to="/dashboard" replace />
+  }
+
+  if (group.data.status !== 'SORTEADO') {
+    const cancelled = group.data.status === 'CANCELLED'
+    return <main className="grid min-h-dvh place-items-center bg-green-100 px-4 py-8 font-mono text-black">
+      <section className="w-full max-w-xl border-2 border-black bg-white p-6 shadow-[6px_6px_0_#151515] sm:p-8">
+        <h1 className="text-3xl font-black">{cancelled ? 'Grupo cancelado' : 'Participação confirmada'}</h1>
+        <h2 className="mt-5 text-xl font-bold [overflow-wrap:anywhere]">{group.data.name}</h2>
+        <p className="mt-4 text-sm leading-6">{cancelled ? 'Este grupo foi cancelado pelo organizador.' : 'Aguardando o organizador realizar o sorteio.'}</p>
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+          {!cancelled && <Button disabled={group.isFetching} onClick={() => group.refetch()}>{group.isFetching ? 'Atualizando…' : 'Atualizar grupo'}</Button>}
+          <ButtonLink to="/dashboard" variant="secondary">Voltar ao dashboard</ButtonLink>
+        </div>
+      </section>
+    </main>
   }
 
   return (

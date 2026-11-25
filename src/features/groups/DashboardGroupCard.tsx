@@ -68,7 +68,7 @@ export function DashboardGroupCard({
         <div className="mt-auto flex items-stretch gap-2 pt-6">
           {actions.canViewDraw && (
             <ButtonLink className="min-h-14 min-w-0 flex-1" to={`/dashboard/groups/${group.id}/participation`}>
-              Ver meu sorteio
+              {group.status === 'SORTEADO' ? 'Ver meu sorteio' : 'Acompanhar grupo'}
             </ButtonLink>
           )}
 
