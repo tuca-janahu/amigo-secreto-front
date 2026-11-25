@@ -1,9 +1,25 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { authService } from './auth'
 
-describe('authService password recovery', () => {
+describe('authService', () => {
   afterEach(() => {
     vi.unstubAllGlobals()
+  })
+
+  it('registers using the cookie session without a separate login request', async () => {
+    const user = { id: 'new-user', name: 'Ana', email: 'ana@example.test' }
+    const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify({ user }), {
+      status: 201,
+      headers: { 'Content-Type': 'application/json' },
+    }))
+    vi.stubGlobal('fetch', fetchMock)
+    const registration = { name: user.name, email: user.email, password: 'secure-password' }
+
+    await expect(authService.register(registration)).resolves.toEqual({ user })
+    expect(fetchMock).toHaveBeenCalledOnce()
+    expect(fetchMock).toHaveBeenCalledWith(expect.stringMatching(/\/auth\/register$/), expect.objectContaining({
+      method: 'POST', credentials: 'include', body: JSON.stringify(registration),
+    }))
   })
 
   it('requests a password reset with only the email', async () => {

@@ -35,6 +35,13 @@ pnpm test
 pnpm build
 ```
 
+## Cadastro com login automático
+
+Após criar a conta, o backend inicia a sessão por cookie HttpOnly. O frontend
+atualiza o cache de autenticação com o usuário retornado e segue para o dashboard
+ou para o convite preservado em `returnTo`, sem pedir login novamente.
+Requer a versão do backend que envia o cookie em `POST /auth/register`.
+
 ## Endpoints consumidos
 
 ### Participação por link

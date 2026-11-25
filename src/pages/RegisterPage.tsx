@@ -4,11 +4,10 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { ButtonLink } from '../components/Button'
 import { BackIcon, PixelBrand } from '../components/PixelIcons'
 import { AuthForm } from '../features/auth/AuthForm'
-import { authQueryKey, authQueryOptions } from '../features/auth/auth.queries'
+import { authQueryKey } from '../features/auth/auth.queries'
 import { getAuthReturnTo } from '../features/auth/navigation'
 import type { AuthFormData } from '../features/auth/auth.schemas'
 import { getErrorMessage } from '../lib/errors'
-import { ApiError } from '../lib/http'
 import { authService } from '../services/auth'
 import { appToast } from '../lib/toast'
 
@@ -23,18 +22,9 @@ export function RegisterPage() {
     setIsSubmitting(true)
     try {
       if (!name) return
-      await authService.register({ name, email, password })
-      try {
-        await queryClient.invalidateQueries({ queryKey: authQueryKey })
-        await queryClient.fetchQuery(authQueryOptions)
-        navigate(returnTo, { replace: true })
-      } catch (authError) {
-        if (authError instanceof ApiError && authError.status === 401) {
-          navigate('/login', { replace: true, state: { returnTo } })
-          return
-        }
-        appToast.error('Conta criada, mas não foi possível confirmar sua sessão. Tente entrar.', { id: 'register-session-error' })
-      }
+      const { user } = await authService.register({ name, email, password })
+      queryClient.setQueryData(authQueryKey, user)
+      navigate(returnTo, { replace: true })
     } catch (submitError) {
       appToast.error(getErrorMessage(
         submitError,
