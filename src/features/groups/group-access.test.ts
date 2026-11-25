@@ -37,11 +37,11 @@ describe('group card actions', () => {
       expected: { canManage: false, canViewDraw: true, manageIconOnly: false },
     },
   ])('returns the correct actions for $label', ({ group, expected }) => {
-    expect(getGroupCardActions({ ...group, status: 'SORTEADO' })).toEqual(expected)
+    expect(getGroupCardActions(group)).toEqual(expected)
   })
 
   it.each(['DRAFT', 'READY', 'CANCELLED'] as const)(
-    'hides the draw action for %s while preserving owner management',
+    'keeps owner management and guest tracking for %s',
     (status) => {
       expect(getGroupCardActions({
         status,
@@ -53,7 +53,7 @@ describe('group card actions', () => {
         status,
         roles: ['PARTICIPANT'],
         participant: { id: 'participant-2', name: 'Guest', revealed: false },
-      })).toEqual({ canManage: false, canViewDraw: false, manageIconOnly: false })
+      })).toEqual({ canManage: false, canViewDraw: true, manageIconOnly: false })
     },
   )
 })
